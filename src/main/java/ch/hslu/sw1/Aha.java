@@ -18,7 +18,7 @@ public class Aha {
             task2();
             task2();    // T ~ n · 3
 
-            for (int j = 0; j < n; j++) {   // innerer Schleife: n-mal
+            for (int j = 0; j < n; j++) {   // innere Schleife: n-mal
 
                 task3();    // T ~ n · n· 2
                 task3();
