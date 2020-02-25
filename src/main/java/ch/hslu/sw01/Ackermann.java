@@ -5,14 +5,17 @@ public class Ackermann {
 
     private static final Logger LOG = LogManager.getLogger(Ackermann.class);
     private static  int i = 0;
+    private static  int j = 0;
     public static void main(final String[] args) {
         LOG.info(ack(2, 2));
         LOG.info("Anzahl Aufrufe von ack(): " + i);
+        LOG.info("Stack: " + j);
     }
 
     public static long ack(final long n, final long m){
         i += 1;
         if(n == 0) {
+            j += 1;
             return m + 1;
         } else if (m == 0) {
             return ack(n - 1, 1);
