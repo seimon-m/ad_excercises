@@ -1,19 +1,20 @@
 package ch.hslu.sw02;
 
-public class List {
+public class List<Allocation> {
 
     private Node head;
 
     public List() {
-        this.head = new Node();
+        this.head = null;
     }
 
-    public void add(final Node obj) {
+    public boolean add(final Allocation alloc) {
         if (this.head == null) {
-            this.head = new Node(obj);
+            this.head = new Node(alloc);
         } else {
-            head.setNextNode(obj);
+            head.nextNode(alloc);
         }
+        return true;
     }
 
     public int size() {

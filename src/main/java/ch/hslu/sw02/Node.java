@@ -1,19 +1,19 @@
 package ch.hslu.sw02;
 
-public class Node<T> {
+public class Node<Allocation> {
 
-    private T value;
+    private Allocation value;
     private Node nextNode;
 
     public Node() {
         this.value = null;
     }
 
-    public Node(T obj) {
-        this.value = obj;
+    public Node(Allocation alloc) {
+        this.value = alloc;
     }
 
-    public T getValue() {
+    public Allocation getValue() {
         return this.value;
     }
 
@@ -26,14 +26,10 @@ public class Node<T> {
     }
 
     public Node getNextNode() {
-        if(hasNextNode()) {
-            return this.nextNode;
-        } else {
-            return null;
-        }
+        return this.nextNode;
     }
 
-    public void setNextNode(final Node n) {
-        this.nextNode = new Node(n);
+    public void nextNode(final Allocation alloc) {
+        this.nextNode = new Node(alloc);
     }
 }
