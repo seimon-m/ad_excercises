@@ -35,8 +35,52 @@ class ListTest {
         assertEquals(4, list.size());
     }
 
+   @Test
+   void testContainsTrue() {
+       Allocation alloc1 = new Allocation(0, 5);
+       List list = new List();
+       list.add(alloc1);
+       assertEquals(true, list.contains(alloc1));
+   }
 
     @Test
-    void remove() {
+    void testContainsFalse() {
+        Allocation alloc1 = new Allocation(0, 5);
+        Allocation alloc2 = new Allocation(2, 9);
+        List list = new List();
+        list.add(alloc1);
+        assertEquals(false, list.contains(alloc2));
+    }
+
+    @Test
+    void testGetFirstElement() {
+        Allocation alloc1 = new Allocation(0, 5);
+        Allocation alloc2 = new Allocation(2, 9);
+        List list = new List();
+        list.add(alloc1);
+        list.add(alloc2);
+        assertEquals(alloc2, list.getFirstElement());
+    }
+
+    @Test
+    void testRemove1() {
+        Allocation alloc1 = new Allocation(0, 5);
+        Allocation alloc2 = new Allocation(2, 9);
+        List list = new List();
+        list.add(alloc1);
+        list.add(alloc2);
+        list.remove(alloc2);
+        assertEquals(1, list.size());
+    }
+
+    @Test
+    void testRemove2() {
+        Allocation alloc1 = new Allocation(0, 5);
+        Allocation alloc2 = new Allocation(2, 9);
+        List list = new List();
+        list.add(alloc1);
+        list.add(alloc2);
+        list.remove(alloc1);
+        assertEquals(1, list.size());
     }
 }
