@@ -1,9 +1,14 @@
 package ch.hslu.sw02;
 
-public class List<Allocation> {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+public class List {
+
+    private static final Logger LOG = LogManager.getLogger(List.class);
     private Node head;
     private Node current;
+    private int size = 0;
 
     public List() {
         this.head = null;
@@ -13,22 +18,24 @@ public class List<Allocation> {
         if (this.head == null) {
             this.head = new Node(alloc);
         } else {
-            Node newHead = new Node(alloc);
-            newHead.nextNode(head);
-            this.head = newHead;
-            return true;
+            this.head = new Node(alloc, this.head);
         }
+        this.size++;
         return true;
     }
 
+//    public int size() {
+////        int nodeCount = 0;
+////        Node lastFoundNode = this.head;
+////        while (lastFoundNode instanceof Node) {
+////            nodeCount++;
+////            lastFoundNode = lastFoundNode.getNextNode();
+////        }
+////        return nodeCount;
+////    }
+
     public int size() {
-        int nodeCount = 0;
-        Node lastFoundNode = this.head;
-        while (lastFoundNode instanceof Node) {
-            nodeCount++;
-            lastFoundNode = lastFoundNode.getNextNode();
-        }
-        return nodeCount;
+        return this.size;
     }
 
     public boolean contains(final Allocation alloc) {
@@ -42,11 +49,11 @@ public class List<Allocation> {
         return false;
     }
 
-    public Node getFirstElement() {
+    public Allocation getFirstElement() {
         Node oldHead = head;
+        this.remove((Allocation) head.getValue());
         this.head = head.getNextNode();
-        //remove(head.getValue());
-        return oldHead;
+        return oldHead.getValue();
     }
 
 
@@ -60,9 +67,10 @@ public class List<Allocation> {
                     this.head = currentNode.getNextNode();
                     currentNode = this.head;
                 } else {
-                    previousNode.nextNode(currentNode.getNextNode());
+                    previousNode.setNextNode(currentNode.getNextNode());
                     currentNode = previousNode;
                 }
+                this.size--;
             }
             previousNode = currentNode;
             currentNode = currentNode.getNextNode();

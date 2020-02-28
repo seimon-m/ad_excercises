@@ -1,7 +1,7 @@
 package ch.hslu.sw02;
 import java.util.Objects;
 
-public class Node<Allocation> {
+public class Node {
 
     private Allocation value;
     private Node nextNode;
@@ -12,6 +12,11 @@ public class Node<Allocation> {
 
     public Node(Allocation alloc) {
         this.value = alloc;
+    }
+
+    public Node(Allocation alloc, Node currentHead) {
+        this.value = alloc;
+        this.nextNode = currentHead;
     }
 
     public Allocation getValue() {
@@ -30,9 +35,14 @@ public class Node<Allocation> {
         return this.nextNode;
     }
 
-    public void nextNode(final Allocation alloc) {
-        this.nextNode = new Node(alloc);
+    public void setNextNode(Node nextNode) {
+        this.nextNode = nextNode;
     }
+
+//    public Node nextNode(final Allocation alloc) {
+//        //this.nextNode = new Node(alloc);
+//
+//    }
 
     @Override
     public final boolean equals(Object obj){
