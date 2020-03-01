@@ -3,7 +3,6 @@ package ch.hslu.sw02;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.nio.BufferUnderflowException;
 import java.util.EmptyStackException;
 
 import static org.junit.jupiter.api.Assertions.*;
