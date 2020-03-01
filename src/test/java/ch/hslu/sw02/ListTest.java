@@ -17,7 +17,7 @@ class ListTest {
     void testAddHead() {
         Allocation alloc = new Allocation(0, 5);
         List list = new List();
-        list.add(alloc);
+        list.push(alloc);
         assertEquals(1, list.size());
     }
 
@@ -26,21 +26,25 @@ class ListTest {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 8);
         Allocation alloc3 = new Allocation(3, 7);
-        Allocation alloc4 = new Allocation(3, 7);
+        Allocation alloc4 = new Allocation(1, 3);
         List list = new List();
-        list.add(alloc1);
-        list.add(alloc2);
-        list.add(alloc3);
-        list.add(alloc4);
+        list.push(alloc1);
+        list.push(alloc2);
+        list.push(alloc3);
+        list.push(alloc4);
         assertEquals(4, list.size());
     }
 
    @Test
    void testContainsTrue() {
-       Allocation alloc1 = new Allocation(0, 5);
+       Allocation alloc1 = new Allocation(2, 5);
+       Allocation alloc2 = new Allocation(2, 7);
+       Allocation alloc3 = new Allocation(3, 7);
        List list = new List();
-       list.add(alloc1);
-       assertEquals(true, list.contains(alloc1));
+       list.push(alloc1);
+       list.push(alloc2);
+       list.push(alloc3);
+       assertEquals(true, list.contains(alloc2));
    }
 
     @Test
@@ -48,18 +52,29 @@ class ListTest {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
         List list = new List();
-        list.add(alloc1);
+        list.push(alloc1);
         assertEquals(false, list.contains(alloc2));
     }
 
     @Test
-    void testGetFirstElement() {
+    void testPop1() {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
         List list = new List();
-        list.add(alloc1);
-        list.add(alloc2);
-        assertEquals(alloc2, list.getFirstElement());
+        list.push(alloc1);
+        list.push(alloc2);
+        assertEquals(alloc2, list.pop());
+    }
+
+    @Test
+    void testPop2() {
+        Allocation alloc1 = new Allocation(0, 5);
+        Allocation alloc2 = new Allocation(2, 9);
+        List list = new List();
+        list.push(alloc1);
+        list.push(alloc2);
+        list.pop();
+        assertEquals(1, list.size());
     }
 
     @Test
@@ -67,8 +82,8 @@ class ListTest {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
         List list = new List();
-        list.add(alloc1);
-        list.add(alloc2);
+        list.push(alloc1);
+        list.push(alloc2);
         list.remove(alloc2);
         assertEquals(1, list.size());
     }
@@ -77,10 +92,12 @@ class ListTest {
     void testRemove2() {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
+        Allocation alloc3 = new Allocation(3, 7);
         List list = new List();
-        list.add(alloc1);
-        list.add(alloc2);
+        list.push(alloc1);
+        list.push(alloc2);
+        list.push(alloc3);
         list.remove(alloc1);
-        assertEquals(1, list.size());
+        assertEquals(2, list.size());
     }
 }

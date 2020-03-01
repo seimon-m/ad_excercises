@@ -6,10 +6,6 @@ public class Node {
     private Allocation value;
     private Node nextNode;
 
-    public Node() {
-        this.value = null;
-    }
-
     public Node(Allocation alloc) {
         this.value = alloc;
     }
@@ -38,11 +34,6 @@ public class Node {
     public void setNextNode(Node nextNode) {
         this.nextNode = nextNode;
     }
-
-//    public Node nextNode(final Allocation alloc) {
-//        //this.nextNode = new Node(alloc);
-//
-//    }
 
     @Override
     public final boolean equals(Object obj){

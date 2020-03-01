@@ -7,25 +7,35 @@ public interface StackInterface {
 
     /**
      * Adds a new element on top of the stack.
-     * @param string to add.
+     *
+     * @param string - the string to add.
      */
-    void push(final String string);
+    String push(final String string);
 
     /**
      * Removes and returns the element on top of the stack.
-     * @return the first element.
+     * @returns the first element.
      */
     String pop();
 
     /**
      * Returns the number of elements in the stack.
-     * @return the count of elements.
+     *
+     * @returns the count of elements.
      */
     int size();
 
     /**
      * Shows if the stack is empty or not.
-     * @return true if the stack is empty.
+     *
+     * @return true if stack is empty.
      */
     boolean isEmpty();
+
+    /**
+     * Shows if the stack is full or not.
+     *
+     * @return true if stack is full.
+     */
+    boolean isFull();
 }

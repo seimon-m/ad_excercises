@@ -14,7 +14,7 @@ public class List {
         this.head = null;
     }
 
-    public boolean add(final Allocation alloc) {
+    public boolean push(final Allocation alloc) {
         if (this.head == null) {
             this.head = new Node(alloc);
         } else {
@@ -23,16 +23,6 @@ public class List {
         this.size++;
         return true;
     }
-
-//    public int size() {
-////        int nodeCount = 0;
-////        Node lastFoundNode = this.head;
-////        while (lastFoundNode instanceof Node) {
-////            nodeCount++;
-////            lastFoundNode = lastFoundNode.getNextNode();
-////        }
-////        return nodeCount;
-////    }
 
     public int size() {
         return this.size;
@@ -49,9 +39,9 @@ public class List {
         return false;
     }
 
-    public Allocation getFirstElement() {
+    public Allocation pop() {
         Node oldHead = head;
-        this.remove((Allocation) head.getValue());
+        this.remove(head.getValue());
         this.head = head.getNextNode();
         return oldHead.getValue();
     }
