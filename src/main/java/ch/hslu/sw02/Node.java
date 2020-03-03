@@ -20,11 +20,7 @@ public class Node {
     }
 
     public boolean hasNextNode() {
-        if (this.nextNode != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.nextNode != null;
     }
 
     public Node getNextNode() {

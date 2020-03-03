@@ -17,7 +17,7 @@ class ListTest {
     void testAddHead() {
         Allocation alloc = new Allocation(0, 5);
         List list = new List();
-        list.push(alloc);
+        list.add(alloc);
         assertEquals(1, list.size());
     }
 
@@ -28,10 +28,10 @@ class ListTest {
         Allocation alloc3 = new Allocation(3, 7);
         Allocation alloc4 = new Allocation(1, 3);
         List list = new List();
-        list.push(alloc1);
-        list.push(alloc2);
-        list.push(alloc3);
-        list.push(alloc4);
+        list.add(alloc1);
+        list.add(alloc2);
+        list.add(alloc3);
+        list.add(alloc4);
         assertEquals(4, list.size());
     }
 
@@ -41,9 +41,9 @@ class ListTest {
        Allocation alloc2 = new Allocation(2, 7);
        Allocation alloc3 = new Allocation(3, 7);
        List list = new List();
-       list.push(alloc1);
-       list.push(alloc2);
-       list.push(alloc3);
+       list.add(alloc1);
+       list.add(alloc2);
+       list.add(alloc3);
        assertEquals(true, list.contains(alloc2));
    }
 
@@ -52,7 +52,7 @@ class ListTest {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
         List list = new List();
-        list.push(alloc1);
+        list.add(alloc1);
         assertEquals(false, list.contains(alloc2));
     }
 
@@ -61,9 +61,9 @@ class ListTest {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
         List list = new List();
-        list.push(alloc1);
-        list.push(alloc2);
-        assertEquals(alloc2, list.pop());
+        list.add(alloc1);
+        list.add(alloc2);
+        assertEquals(alloc2, list.getFirstElement());
     }
 
     @Test
@@ -71,9 +71,9 @@ class ListTest {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
         List list = new List();
-        list.push(alloc1);
-        list.push(alloc2);
-        list.pop();
+        list.add(alloc1);
+        list.add(alloc2);
+        list.getFirstElement();
         assertEquals(1, list.size());
     }
 
@@ -82,8 +82,8 @@ class ListTest {
         Allocation alloc1 = new Allocation(0, 5);
         Allocation alloc2 = new Allocation(2, 9);
         List list = new List();
-        list.push(alloc1);
-        list.push(alloc2);
+        list.add(alloc1);
+        list.add(alloc2);
         list.remove(alloc2);
         assertEquals(1, list.size());
     }
@@ -94,9 +94,9 @@ class ListTest {
         Allocation alloc2 = new Allocation(2, 9);
         Allocation alloc3 = new Allocation(3, 7);
         List list = new List();
-        list.push(alloc1);
-        list.push(alloc2);
-        list.push(alloc3);
+        list.add(alloc1);
+        list.add(alloc2);
+        list.add(alloc3);
         list.remove(alloc1);
         assertEquals(2, list.size());
     }

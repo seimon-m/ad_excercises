@@ -48,6 +48,7 @@ public class Queue implements QueueInterface {
     public char poll() {
         if (size != 0) {
             char returnValue = buffer[head];
+            buffer[head] = 0;
             this.size--;
             this.moveHead();
             LOG.debug(toString());

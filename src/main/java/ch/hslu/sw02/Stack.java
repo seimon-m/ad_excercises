@@ -29,10 +29,11 @@ public class Stack implements StackInterface {
     @Override
     public String pop() {
         if (!isEmpty()) {
-            String returnString = stack[this.lastFilledIndex];
+            String value = stack[this.lastFilledIndex];
+            stack[this.lastFilledIndex] = null; // Referenz definitiv entfernen
             this.lastFilledIndex--;
             actualSize--;
-            return returnString;
+            return value;
         } else {
             throw new EmptyStackException();
         }
@@ -54,17 +55,6 @@ public class Stack implements StackInterface {
 
     @Override
     public boolean isFull() {
-        int usedIndexes = 0;
-//        for (int i = 0; i < stack.length; i++) {
-//            if (stack[i] != null) {
-//                usedIndexes++;
-//            }
-//        }
-//        if (usedIndexes == stack.length) {
-//            return true;
-//        } else {
-//            return false;
-//        }
         if (this.actualSize == stack.length) {
             return true;
         } else {

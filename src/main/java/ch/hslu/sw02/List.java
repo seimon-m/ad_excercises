@@ -14,7 +14,7 @@ public class List {
         this.head = null;
     }
 
-    public boolean push(final Allocation alloc) {
+    public boolean add(final Allocation alloc) {
         if (this.head == null) {
             this.head = new Node(alloc);
         } else {
@@ -39,7 +39,7 @@ public class List {
         return false;
     }
 
-    public Allocation pop() {
+    public Allocation getFirstElement() {
         Node oldHead = head;
         this.remove(head.getValue());
         this.head = head.getNextNode();
