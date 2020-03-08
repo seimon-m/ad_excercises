@@ -1,14 +1,17 @@
 package ch.hslu.sw03;
 
+import com.sun.source.tree.Tree;
+
 public interface BinaryTreeInterface {
 
     /**
      * Add the given element to the tree.
      *
+     * @param root    the root of the new subtree
      * @param element the element to add
      * @return if the element has been added
      */
-    public boolean insert(int element);
+    public boolean insert(TreeNode root, int element);
 
     /**
      * Remove the given element from the tree.
@@ -21,10 +24,11 @@ public interface BinaryTreeInterface {
     /**
      * Returns true if this tree contains the specified element.
      *
+     * @param root    the root of the new subtree
      * @param element the element to search for
      * @return whether the element was found
      */
-    public boolean search(int element);
+    public boolean search(TreeNode root, int element);
 
     /**
      * Returns the maximum allowed children for each node.
