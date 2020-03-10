@@ -1,6 +1,5 @@
 package ch.hslu.sw03;
 
-import com.sun.source.tree.Tree;
 
 public interface BinaryTreeInterface {
 
@@ -11,7 +10,7 @@ public interface BinaryTreeInterface {
      * @param element the element to add
      * @return if the element has been added
      */
-    public boolean insert(TreeNode root, int element);
+    boolean insert(TreeNode root, int element);
 
     /**
      * Remove the given element from the tree.
@@ -19,7 +18,7 @@ public interface BinaryTreeInterface {
      * @param element the element to remove
      * @return if the element has been removed
      */
-    public boolean remove(int element);
+    boolean remove(int element);
 
     /**
      * Returns true if this tree contains the specified element.
@@ -28,14 +27,14 @@ public interface BinaryTreeInterface {
      * @param element the element to search for
      * @return whether the element was found
      */
-    public boolean search(TreeNode root, int element);
+    boolean search(TreeNode root, int element);
 
     /**
      * Returns the maximum allowed children for each node.
      *
      * @return the maximum allowed children for each node.
      */
-    public int getOrder();
+    int getOrder();
 
     /**
      * Get the degree for the node of the given element.
@@ -44,7 +43,7 @@ public interface BinaryTreeInterface {
      * @param node
      * @return the amount of children the node has.
      */
-    public int getDegree(TreeNode node);
+    int getDegree(TreeNode node);
 
     /**
      * Returns the weight of the tree.
@@ -52,5 +51,5 @@ public interface BinaryTreeInterface {
      *
      * @return the tree's weight
      */
-    public int getWeight();
+    int getWeight();
 }

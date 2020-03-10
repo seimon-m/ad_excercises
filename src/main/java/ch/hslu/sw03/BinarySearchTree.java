@@ -31,10 +31,23 @@ public class BinarySearchTree implements BinaryTreeInterface {
         node08.rightChild(node09);
         node09.rightChild(node10);
         node10.rightChild(node12);
+
     }
 
     public TreeNode getRoot() {
         return this.root;
+    }
+
+    public void inorder(TreeNode root) {
+        if (this.root == null) {
+            LOG.info("Tree is empty");
+        }
+
+        if (root.hasLeftChild()) {
+            inorder(root.getLeftChild());
+        } else {
+            LOG.info(root.getValue());
+        }
     }
 
     @Override
