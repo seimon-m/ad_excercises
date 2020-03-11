@@ -38,15 +38,15 @@ class HashsetTest {
     void add5() {
         Hashset hashset = new Hashset();
         hashset.add(1);
-        hashset.add(435);
-        hashset.add(345);
-        hashset.add(45223);
-        hashset.add(3455);
-        hashset.add(34);
-        hashset.add(55433);
-        hashset.add(345);
-        hashset.add(333);
-        hashset.add(28933);
+        hashset.add(5);
+        hashset.add(10);
+        hashset.add(20);
+        hashset.add(3);
+        hashset.add(17);
+        hashset.add(11);
+        hashset.add(55);
+        hashset.add(30);
+        hashset.add(29);
         assertEquals(10, hashset.getSize());
     }
 

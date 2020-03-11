@@ -27,11 +27,12 @@ public class Hashset implements HashsetInterface {
     }
 
     @Override
-    public boolean remove(final Integer element) {
+    public Integer remove(final Integer element) {
+        Integer returnValue = storage[generateIndexFromHash(element)];
         storage[generateIndexFromHash(element)] = 0;
         size--;
         LOG.debug(toString());
-        return true;
+        return returnValue;
     }
 
     @Override
