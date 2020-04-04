@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Negative values and zero are not allowed.
  * Zero is free, -1 is a tombstone.
  * <p>
- * TODO: search und add funktionieren nur bis array ende. Diese müssten je nachdem auch wieder bei Index 0 anfangen.
+ * TODO: search und add funktionieren nur bis array ende. Diese müssten je nachdem auch wieder bei Index 0 anfangen. -> Wert modulo rechnen
  */
 
 public class HashsetCollision implements HashsetInterface {
