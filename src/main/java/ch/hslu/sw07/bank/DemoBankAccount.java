@@ -55,21 +55,28 @@ public final class DemoBankAccount {
         final ArrayList<BankAccount> source = new ArrayList<>();
         final ArrayList<BankAccount> target = new ArrayList<>();
         final int amount = 100000;
-        final int number = 5;
+        final int number = 10;
+
         for (int i = 0; i < number; i++) {
             source.add(new BankAccount(amount));
             target.add(new BankAccount());
         }
+
         final Thread[] threads = new Thread[number * 2];
+
         for (int i = 0; i < number; i++) {
             threads[i] = new Thread(new AccountTask(source.get(i), target.get(i), amount));
             threads[i + number] = new Thread(new AccountTask(target.get(i), source.get(i), amount));
         }
+
         for (final Thread thread : threads) {
             thread.start();
         }
+
         waitForCompletion(threads);
+
         LOG.info("Bank accounts after transfers");
+
         for (int i = 0; i < number; i++) {
             LOG.info("source({}) = {}; target({}) = {};", i, source.get(i).getBalance(), i, target.get(i).getBalance());
         }

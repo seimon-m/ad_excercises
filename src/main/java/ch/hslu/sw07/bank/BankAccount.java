@@ -63,7 +63,9 @@ public final class BankAccount {
      * @param amount zu überweisender Betrag.
      */
     public void transfer(final BankAccount target, final int amount) {
-        this.balance -= amount;
-        target.deposite(amount);
+        synchronized (BankAccount.class) {
+            this.balance -= amount;
+            target.deposite(amount);
+        }
     }
 }
