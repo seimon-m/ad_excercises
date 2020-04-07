@@ -21,6 +21,7 @@ package ch.hslu.sw07.bank;
 public final class BankAccount {
 
     private int balance;
+    private Object lock = new Object();
 
     /**
      * Erzeugt ein Bankkonto mit einem Anfangssaldo.
@@ -53,7 +54,9 @@ public final class BankAccount {
      * @param amount Einzuzahlender Betrag
      */
     public void deposite(final int amount) {
-        this.balance += amount;
+        synchronized (lock) {
+            this.balance += amount;
+        }
     }
 
     /**
@@ -63,9 +66,9 @@ public final class BankAccount {
      * @param amount zu überweisender Betrag.
      */
     public void transfer(final BankAccount target, final int amount) {
-        synchronized (BankAccount.class) {
+        synchronized (lock) {
             this.balance -= amount;
-            target.deposite(amount);
         }
+        target.deposite(amount);
     }
 }
