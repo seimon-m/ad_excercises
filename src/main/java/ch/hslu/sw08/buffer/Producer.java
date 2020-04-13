@@ -50,7 +50,6 @@ public final class Producer implements Runnable {
 
     /**
      * Liefert die Summe aller gespeicherter Werte.
-     *
      * @return Summe.
      */
     public long getSum() {

@@ -36,7 +36,6 @@ public final class DemoBoundedBuffer {
 
     /**
      * Main-Demo.
-     *
      * @param args not used.
      * @throws InterruptedException wenn das warten unterbrochen wird.
      */

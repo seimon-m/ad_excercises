@@ -23,12 +23,15 @@ public final class Semaphore {
 
     private int sema; // Semaphorenzähler
     private int count; // Anzahl der wartenden Threads.
+    private int permits;
+    private int limit;
+
 
     /**
      * Erzeugt ein Semaphore mit 0 Passiersignalen.
      */
     public Semaphore() {
-        this(0);
+        this(0, 0);
     }
 
     /**
@@ -53,8 +56,16 @@ public final class Semaphore {
      * @throws IllegalArgumentException wenn Argumente ungültige Werte besitzen.
      */
     public Semaphore(final int permits, final int limit) throws IllegalArgumentException {
-        this(0);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (permits > limit) {
+            throw new IllegalArgumentException("limit can't be greater than the initial permits");
+        }
+
+        if (permits < 0 || limit < 0) {
+            throw new IllegalArgumentException("permits and limit can't be negative");
+        }
+
+        this.permits = permits;
+        this.limit = limit;
     }
 
     /**
@@ -63,7 +74,7 @@ public final class Semaphore {
      * Zähler null ist wird der Aufrufer blockiert.
      *
      * @throws InterruptedException falls das Warten unterbrochen
-     *                              wird.
+     * wird.
      */
     public synchronized void acquire() throws InterruptedException {
         while (sema == 0) {

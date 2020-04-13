@@ -25,7 +25,6 @@ public final class Consumer implements Runnable {
 
     /**
      * Erzeugt einen Konsumenten, der soviel Integer-Werte ausliest, wie er nur kann.
-     *
      * @param queue Queue zum Lesen der Integer-Werte.
      */
     public Consumer(final BoundedBuffer<Integer> queue) {
@@ -37,7 +36,7 @@ public final class Consumer implements Runnable {
     public void run() {
         while (true) {
             try {
-                sum += queue.get();
+                sum += queue.get(1000);
             } catch (InterruptedException ex) {
                 return;
             }
@@ -46,7 +45,6 @@ public final class Consumer implements Runnable {
 
     /**
      * Liefert die Summe aller ausgelesener Werte.
-     *
      * @return Summe.
      */
     public long getSum() {

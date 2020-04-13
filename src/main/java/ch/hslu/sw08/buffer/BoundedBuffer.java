@@ -17,6 +17,7 @@ package ch.hslu.sw08.buffer;
 
 import java.util.ArrayDeque;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Puffer nach dem First In First Out Prinzip mit einer begrenzten Kapazität.
@@ -29,6 +30,8 @@ public final class BoundedBuffer<T> implements Buffer<T> {
     private final ArrayDeque<T> queue;
     private final Semaphore putSema;
     private final Semaphore takeSema;
+    private int maxSize;
+    private int size;
 
     /**
      * Erzeugt einen Puffer mit bestimmter Kapazität.
@@ -36,7 +39,8 @@ public final class BoundedBuffer<T> implements Buffer<T> {
      * @param n Kapazität des Puffers
      */
     public BoundedBuffer(final int n) {
-        queue = new ArrayDeque<>(n);
+        maxSize = n;
+        queue = new ArrayDeque<>(maxSize);
         putSema = new Semaphore(n);
         takeSema = new Semaphore(0);
     }
@@ -46,6 +50,7 @@ public final class BoundedBuffer<T> implements Buffer<T> {
         putSema.acquire();
         synchronized (queue) {
             queue.addFirst(elem);
+            size++;
         }
         takeSema.release();
     }
@@ -56,6 +61,7 @@ public final class BoundedBuffer<T> implements Buffer<T> {
         T elem;
         synchronized (queue) {
             elem = queue.removeLast();
+            size--;
         }
         putSema.release();
         return elem;
@@ -63,12 +69,30 @@ public final class BoundedBuffer<T> implements Buffer<T> {
 
     @Override
     public boolean put(T elem, long millis) throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (putSema.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
+            synchronized (queue) {
+                queue.addFirst(elem);
+                size++;
+            }
+            takeSema.release();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public T get(long millis) throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!putSema.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
+            return null;
+        }
+        T elem;
+        synchronized (queue) {
+            elem = queue.removeLast();
+            size--;
+        }
+        putSema.release();
+        return elem;
     }
 
     @Override
@@ -83,16 +107,24 @@ public final class BoundedBuffer<T> implements Buffer<T> {
 
     @Override
     public boolean empty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.queue.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean full() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.queue.size() == this.maxSize) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public boolean size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int size() {
+        return this.size;
     }
 }
