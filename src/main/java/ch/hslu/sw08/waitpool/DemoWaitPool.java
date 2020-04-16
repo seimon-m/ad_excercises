@@ -39,6 +39,8 @@ public final class DemoWaitPool {
         Thread t1 = new Thread(waiter);
         t1.start();
         Thread.sleep(1000);
-        LOCK.notify();
+        synchronized (LOCK) {
+            LOCK.notify();
+        }
     }
 }
