@@ -15,16 +15,23 @@
  */
 package ch.hslu.sw09.buffer;
 
-import java.util.concurrent.BlockingDeque;
+import ch.hslu.sw08.buffer.Buffer;
+
+import java.util.ArrayDeque;
+import java.util.concurrent.*;
 
 /**
  * Puffer mit einer begrenzten Kapazität. Der Puffer ist thread sicher.
  *
  * @param <T> Elememente des Buffers
  */
-public class BoundedBufferAdapter<T> {
+public final class BoundedBufferAdapter<T> implements Buffer<T> {
 
-    private final BlockingDeque<T> deque;
+    private final LinkedBlockingDeque<T> queue;
+    private final Semaphore putSema;
+    private final Semaphore takeSema;
+    private int maxSize;
+    private int size;
 
     /**
      * Erzeugt einen Puffer mit bestimmter Kapazität.
@@ -32,113 +39,92 @@ public class BoundedBufferAdapter<T> {
      * @param n Kapazität des Puffers
      */
     public BoundedBufferAdapter(final int n) {
-        deque = null;
+        maxSize = n;
+        queue = new LinkedBlockingDeque<>(maxSize);
+        putSema = new Semaphore(n);
+        takeSema = new Semaphore(0);
     }
 
-    /**
-     * Fügt ein Element in den Puffer ein, wenn dies möglich ist, wenn nicht muss der Schreiber
-     * warten.
-     *
-     * @param elem Element zum Einfügen.
-     * @throws InterruptedException falls das Warten unterbrochen wird.
-     */
+    @Override
     public void put(final T elem) throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        putSema.acquire();
+        synchronized (queue) {
+            queue.addFirst(elem);
+            size++;
+        }
+        takeSema.release();
     }
 
-    /**
-     * Fügt ein Element am Anfang in den Puffer ein, wenn dies möglich ist, wenn nicht muss der
-     * Schreiber warten.
-     *
-     * @param elem Element zum Einfügen.
-     * @throws InterruptedException falls das Warten unterbrochen wird.
-     */
-    public void push(final T elem) throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * Ein Element T speichern oder nach einem Timeout abbrechen. Falls der Puffer voll ist, warten
-     * bis ein Platz frei wird.
-     *
-     * @param elem   zu speicherndes Element.
-     * @param millis Timeout bis zum Abbruch.
-     * @return true, wenn Element gespeichert wurde, false, wenn Timeout eingetreten ist.
-     * @throws InterruptedException falls das Warten unterbrochen wird.
-     */
-    public boolean put(final T elem, final long millis) throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * Liest und entfernt ein Element aus dem Puffer, wenn dies möglich ist, wenn nicht muss der
-     * Leser warten.
-     *
-     * @return gelesenes Element.
-     * @throws InterruptedException falls das Warten unterbrochen wird.
-     */
+    @Override
     public T get() throws InterruptedException {
+        takeSema.acquire();
+        T elem;
+        synchronized (queue) {
+            elem = queue.removeLast();
+            size--;
+        }
+        putSema.release();
+        return elem;
+    }
+
+    @Override
+    public boolean put(T elem, long millis) throws InterruptedException {
+        if (putSema.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
+            synchronized (queue) {
+                queue.addFirst(elem);
+                size++;
+            }
+            takeSema.release();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public T get(long millis) throws InterruptedException {
+        if (!putSema.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
+            return null;
+        }
+        T elem;
+        synchronized (queue) {
+            elem = queue.removeLast();
+            size--;
+        }
+        putSema.release();
+        return elem;
+    }
+
+    @Override
+    public T first() throws InterruptedException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * Liest und entfernt ein Element am Anfang aus dem Puffer, wenn dies möglich ist, wenn nicht
-     * muss der Leser warten.
-     *
-     * @return gelesenes Element.
-     * @throws InterruptedException falls das Warten unterbrochen wird.
-     */
-    public T front() throws InterruptedException {
+    @Override
+    public T last() throws InterruptedException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * Liest und entfernt ein Element am Ende aus dem Puffer, wenn dies möglich ist, wenn nicht muss
-     * der Leser warten.
-     *
-     * @return gelesenes Element.
-     * @throws InterruptedException falls das Warten unterbrochen wird.
-     */
-    public T back() throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * Liest und entfernt ein Element aus dem Puffer, wenn dies innert einer definierten Zeit
-     * möglich ist.
-     *
-     * @param millis Anzahl Millisekunden, bis das Warten beendet wird.
-     * @return gelesenes Element wenn erfolgreich, sonst null.
-     * @throws InterruptedException falls das Warten unterbrochen wird.
-     */
-    public T get(final long millis) throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * Liefert true, wenn der Puffer leer ist.
-     *
-     * @return true, wenn der Puffer leer ist.
-     */
+    @Override
     public boolean empty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.queue.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    /**
-     * Liefert true, wenn der Puffer voll ist.
-     *
-     * @return true, wenn der Puffer voll ist.
-     */
+    @Override
     public boolean full() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (this.queue.size() == this.maxSize) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    /**
-     * Liefert die Anzahl Elemente im Puffer.
-     *
-     * @return Anzahl Elemente im Puffer.
-     */
+    @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.size;
     }
 }

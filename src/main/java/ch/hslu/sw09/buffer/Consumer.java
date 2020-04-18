@@ -15,13 +15,21 @@
  */
 package ch.hslu.sw09.buffer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.concurrent.Callable;
+
 /**
  * Konsument, der soviele Werte aus einer Queue liest, wie er nur kann.
  */
-public final class Consumer implements Runnable {
+public final class Consumer implements Callable<Integer> {
+
+    private static final Logger LOG = LogManager.getLogger(Consumer.class);
 
     private final BoundedBufferAdapter<Integer> queue;
-    private long sum;
+    private int sum;
+    private volatile boolean run;
 
     /**
      * Erzeugt einen Konsumenten, der soviel Integer-Werte ausliest, wie er nur kann.
@@ -31,17 +39,19 @@ public final class Consumer implements Runnable {
     public Consumer(final BoundedBufferAdapter<Integer> queue) {
         this.queue = queue;
         this.sum = 0;
+        this.run = true;
     }
 
     @Override
-    public void run() {
-        while (true) {
+    public Integer call() {
+        while (run) {  // Konsumiere bis das run Flag false ist. Flag wird extern gesetzt.
             try {
                 sum += queue.get();
             } catch (InterruptedException ex) {
-                return;
+                LOG.error(ex);
             }
         }
+        return sum;
     }
 
     /**
@@ -49,7 +59,11 @@ public final class Consumer implements Runnable {
      *
      * @return Summe.
      */
-    public long getSum() {
+    public int getSum() {
         return sum;
+    }
+
+    public void setRunFalse() {
+        this.run = false;
     }
 }

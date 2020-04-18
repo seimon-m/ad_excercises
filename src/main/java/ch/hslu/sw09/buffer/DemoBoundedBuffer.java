@@ -18,8 +18,9 @@ package ch.hslu.sw09.buffer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Demonstration des BoundedBuffers mit n Producer und m Consumer.
@@ -40,38 +41,58 @@ public final class DemoBoundedBuffer {
      * @param args not used.
      * @throws InterruptedException wenn das warten unterbrochen wird.
      */
-    public static void main(final String args[]) throws InterruptedException {
+    public static void main(final String args[]) throws InterruptedException, ExecutionException {
         final Random random = new Random();
         final int nPros = 3;
-        final Producer[] producers = new Producer[nPros];
-        final ThreadGroup prosGroup = new ThreadGroup("Producer-Threads");
         final int mCons = 2;
-        final Consumer[] consumers = new Consumer[mCons];
-        final ThreadGroup consGroup = new ThreadGroup("Consumer-Threads");
-        final BoundedBufferAdapter<Integer> queue = new BoundedBufferAdapter<>(50);
-        for (int i = 0; i < nPros; i++) {
-            producers[i] = new Producer(queue, random.nextInt(10000));
-            new Thread(prosGroup, producers[i], "Prod  " + (char) (i + 65)).start();
-        }
-        for (int i = 0; i < mCons; i++) {
-            consumers[i] = new Consumer(queue);
-            new Thread(consGroup, consumers[i], "Cons " + (char) (i + 65)).start();
-        }
-        while (prosGroup.activeCount() > 0) {
-            Thread.yield();
-        }
-        TimeUnit.MILLISECONDS.sleep(100);
-        consGroup.interrupt();
-        int sumPros = 0;
-        for (int i = 0; i < nPros; i++) {
-            LOG.info("Prod " + (char) (i + 65) + " = " + producers[i].getSum());
-            sumPros += producers[i].getSum();
-        }
         int sumCons = 0;
-        for (int i = 0; i < mCons; i++) {
-            LOG.info("Cons " + (char) (i + 65) + " = " + consumers[i].getSum());
-            sumCons += consumers[i].getSum();
+        int sumProd = 0;
+
+
+        ArrayList<Consumer> consumers = new ArrayList<>();
+        ArrayList<Producer> producers = new ArrayList<>();
+
+        ArrayList<Future<Integer>> tasksProd = new ArrayList<>();
+        ArrayList<Future<Integer>> tasksCons = new ArrayList<>();
+
+        final ExecutorService executorProd = Executors.newCachedThreadPool();
+        final ExecutorService executorCons = Executors.newCachedThreadPool();
+
+
+        final BoundedBufferAdapter<Integer> queue = new BoundedBufferAdapter<>(50);
+
+        for (int i = 0; i < nPros; i++) {
+            producers.add(new Producer(queue, random.nextInt(10000)));
+            tasksProd.add(executorProd.submit(producers.get(i)));
         }
-        LOG.info(sumPros + " = " + sumCons);
+        for (int i = 0; i < mCons; i++) {
+            consumers.add(new Consumer(queue));
+            tasksCons.add(executorCons.submit(consumers.get(i)));
+        }
+
+        TimeUnit.MILLISECONDS.sleep(100);
+
+        // Erlange die Summe aller Produzenten. Wartet bis alle Produzenten fertig sind, daher blockierender Aufruf.
+        for (Future<Integer> future : tasksProd) {
+            sumProd += future.get();
+        }
+
+        // Setzte das run Flag von allen Konsumenten auf false.
+        for (Consumer cons : consumers) {
+            cons.setRunFalse();
+        }
+
+        // Beende die beiden ExecutorServices
+        executorCons.shutdown();
+        executorProd.shutdown();
+
+        // Erlange die Summe aller Konsumenten.
+        for (Future<Integer> future : tasksCons) {
+            sumCons += future.get();
+        }
+
+        LOG.info("Produziert: " + sumProd + " | Konsumiert: " + sumCons + " | Differenz: " + (sumProd - sumCons));
+        LOG.info("BoundenBuffer leer? " + queue.empty());
     }
+
 }

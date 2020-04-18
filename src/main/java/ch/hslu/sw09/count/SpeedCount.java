@@ -31,7 +31,7 @@ import java.util.concurrent.Future;
  */
 public final class SpeedCount {
 
-    private static final Logger LOG = LogManager.getLogger(ch.hslu.ad.exercise.n3.count.SpeedCount.class);
+    private static final Logger LOG = LogManager.getLogger(SpeedCount.class);
     private static boolean counterCheck;
 
     /**

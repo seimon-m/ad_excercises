@@ -32,7 +32,7 @@ import java.util.concurrent.Future;
  */
 public final class DemoConcurrentList {
 
-    private static final Logger LOG = LogManager.getLogger(ch.hslu.ad.exercise.n3.conclist.DemoConcurrentList.class);
+    private static final Logger LOG = LogManager.getLogger(DemoConcurrentList.class);
 
     /**
      * Privater Konstruktor.

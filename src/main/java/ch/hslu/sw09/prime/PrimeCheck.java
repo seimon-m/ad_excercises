@@ -26,7 +26,7 @@ import java.util.Random;
  */
 public final class PrimeCheck {
 
-    private static final Logger LOG = LogManager.getLogger(ch.hslu.ad.exercise.n3.prime.PrimeCheck.class);
+    private static final Logger LOG = LogManager.getLogger(PrimeCheck.class);
 
     /**
      * Privater Konstruktor.

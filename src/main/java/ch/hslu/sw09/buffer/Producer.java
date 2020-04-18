@@ -15,14 +15,21 @@
  */
 package ch.hslu.sw09.buffer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.concurrent.Callable;
+
 /**
  * Produzent, der eine maximale Anzahl Werte produziert und diese in eine Queue speichert.
  */
-public final class Producer implements Runnable {
+public final class Producer implements Callable<Integer> {
+
+    private static final Logger LOG = LogManager.getLogger(Producer.class);
 
     private final BoundedBufferAdapter<Integer> queue;
     private final int maxRange;
-    private long sum;
+    private int sum;
 
     /**
      * Erzeugt einen Produzent, der eine bestimmte Anzahl Integer-Werte produziert.
@@ -37,15 +44,16 @@ public final class Producer implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Integer call() {
         for (int i = 0; i < maxRange; i++) {
             try {
                 sum += i;
                 queue.put(i);
             } catch (InterruptedException ex) {
-                return;
+                LOG.error(ex);
             }
         }
+        return sum;
     }
 
     /**
@@ -53,7 +61,7 @@ public final class Producer implements Runnable {
      *
      * @return Summe.
      */
-    public long getSum() {
+    public int getSum() {
         return sum;
     }
 }
