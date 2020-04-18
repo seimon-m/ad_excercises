@@ -30,7 +30,7 @@ import java.util.concurrent.*;
 public final class PrimeCheck {
 
     private static final Logger LOG = LogManager.getLogger(PrimeCheck.class);
-    private static int n = 1;
+    private static int nPrimes = 1;
 
     /**
      * Privater Konstruktor.
@@ -45,10 +45,10 @@ public final class PrimeCheck {
      */
     public static void main(String[] args) {
 
-        ExecutorService threadpool = Executors.newCachedThreadPool();
+        final int requiredPrimes = 100;
+        ExecutorService threadpool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         List<Callable<BigInteger>> tasks = new ArrayList<>();
-        int nTasks = 100;
-        for (int i = 0; i < nTasks; i++) {
+        for (int i = 0; i < requiredPrimes; i++) {
             tasks.add(new RandomPrime());
         }
 
@@ -58,29 +58,14 @@ public final class PrimeCheck {
         try {
             for (int i = 0; i < tasks.size(); i++) {
                 Future<BigInteger> future = completionService.take();
-                if (future.get() != BigInteger.ZERO) {
-                    LOG.info(n + ": " + future.get().toString().substring(0, 20) + "...");
-                    n++;
-                } else {
-                    LOG.info("Task " + i + " : No prime");
-                }
-                if (n > 100) {
+                LOG.info(nPrimes + ": " + future.get().toString().substring(0, 20) + "...");
+                nPrimes++;
+                if (nPrimes >= requiredPrimes) {
                     threadpool.shutdown();
                 }
-
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
-
-//        int n = 1;
-//        while (n <= 100) {
-//            BigInteger bi = new BigInteger(1024, new Random());
-//            if (bi.isProbablePrime(Integer.MAX_VALUE)) {
-//                LOG.info(n + ": " + bi.toString().substring(0, 20) + "...");
-//                n++;
-//            }
-//        }
     }
 }
