@@ -78,7 +78,7 @@ public final class SpeedCount {
      */
     public static void main(final String args[]) {
         final int passes = 23;
-        final int tester = 8;
+        final int tester = 20;
         final Counter counterSync = new SynchronizedCounter();
         long sum = 0;
         for (int i = 0; i < passes; i++) {
