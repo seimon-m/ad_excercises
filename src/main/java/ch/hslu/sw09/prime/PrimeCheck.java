@@ -45,6 +45,8 @@ public final class PrimeCheck {
      */
     public static void main(String[] args) {
 
+        long time1 = System.currentTimeMillis();
+
         final int requiredPrimes = 100;
         ExecutorService threadpool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         List<Callable<BigInteger>> tasks = new ArrayList<>();
@@ -67,5 +69,8 @@ public final class PrimeCheck {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        long time2 = System.currentTimeMillis();
+        LOG.info("Time: " + (time2 - time1));
     }
 }
