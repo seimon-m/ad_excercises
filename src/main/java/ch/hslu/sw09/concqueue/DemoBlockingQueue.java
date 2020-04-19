@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.hslu.sw09.conclist;
+package ch.hslu.sw09.concqueue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 /**
  * Demonstration einer synchrnisierten List mit n Producer und m Consumer.
  */
-public final class DemoConcurrentList {
+public final class DemoBlockingQueue {
 
-    private static final Logger LOG = LogManager.getLogger(DemoConcurrentList.class);
+    private static final Logger LOG = LogManager.getLogger(DemoBlockingQueue.class);
 
     /**
      * Privater Konstruktor.
      */
-    private DemoConcurrentList() {
+    private DemoBlockingQueue() {
     }
 
     /**
@@ -48,12 +45,11 @@ public final class DemoConcurrentList {
 
         long time1 = System.currentTimeMillis();
 
-        final List<Integer> list = new LinkedList<>();
-        final List<Integer> syncList = Collections.synchronizedList(list);
+        final BlockingQueue<Integer> queue = new LinkedBlockingQueue<>();
         final ExecutorService executor = Executors.newCachedThreadPool();
         final List<Future<Long>> futures = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            futures.add(executor.submit(new Producer(syncList, 1000)));
+            futures.add(executor.submit(new Producer(queue, 1000)));
         }
         Iterator<Future<Long>> iterator = futures.iterator();
         long totProd = 0;
@@ -63,7 +59,7 @@ public final class DemoConcurrentList {
             LOG.info("prod sum = " + sum);
         }
         LOG.info("prod tot = " + totProd);
-        long totCons = executor.submit(new Consumer(syncList)).get();
+        long totCons = executor.submit(new Consumer(queue)).get();
         LOG.info("cons tot = " + totCons);
         executor.shutdown();
 

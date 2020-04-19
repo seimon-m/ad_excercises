@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.hslu.sw09.conclist;
+package ch.hslu.sw09.concqueue;
 
 import java.util.Iterator;
 import java.util.List;
@@ -25,15 +25,15 @@ import java.util.concurrent.Callable;
  */
 public final class Consumer implements Callable<Long> {
 
-    private final List<Integer> list;
+    private final BlockingQueue<Integer> queue;
 
     /**
      * Erzeugt einen Konsumenten, der soviel Integer-Werte ausliest, wie er nur kann.
      *
-     * @param list Queue zum Lesen der Integer-Werte.
+     * @param queue Queue zum Lesen der Integer-Werte.
      */
-    public Consumer(final List<Integer> list) {
-        this.list = list;
+    public Consumer(final BlockingQueue<Integer> queue) {
+        this.queue = queue;
     }
 
     /**
@@ -45,7 +45,7 @@ public final class Consumer implements Callable<Long> {
     @Override
     public Long call() throws Exception {
         long sum = 0;
-        Iterator<Integer> iterable = list.iterator();
+        Iterator<Integer> iterable = queue.iterator();
         while (iterable.hasNext()) {
             sum += iterable.next();
         }

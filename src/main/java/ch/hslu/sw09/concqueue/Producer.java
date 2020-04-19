@@ -13,31 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.hslu.sw09.conclist;
+package ch.hslu.sw09.concqueue;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
 /**
- * Konsument, der soviele Integer Werte aus einer Liste liest, wie er nur kann.
+ * Produzent, der eine maximale Anzahl Werte produziert und diese in eine Queue speichert.
  */
-public final class Consumer implements Callable<Long> {
+public final class Producer implements Callable<Long> {
 
-    private final List<Integer> list;
+    private final BlockingQueue<Integer> queue;
+    private final int maxRange;
 
     /**
-     * Erzeugt einen Konsumenten, der soviel Integer-Werte ausliest, wie er nur kann.
+     * Erzeugt einen Produzent, der eine bestimmte Anzahl Integer-Werte produziert.
      *
-     * @param list Queue zum Lesen der Integer-Werte.
+     * @param queue Queue zum Speichern der Integer-Werte.
+     * @param max   Anzahl Integer-Werte.
      */
-    public Consumer(final List<Integer> list) {
-        this.list = list;
+    public Producer(final BlockingQueue<Integer> queue, final int max) {
+        this.queue = queue;
+        this.maxRange = max;
     }
 
     /**
-     * Liefert die Summe aller ausgelesener Werte.
+     * Liefert die Summe aller zusammengezählter Integer Werte.
      *
      * @return Summe.
      * @throws Exception falls Ausnahmen passieren.
@@ -45,9 +47,9 @@ public final class Consumer implements Callable<Long> {
     @Override
     public Long call() throws Exception {
         long sum = 0;
-        Iterator<Integer> iterable = list.iterator();
-        while (iterable.hasNext()) {
-            sum += iterable.next();
+        for (int i = 1; i <= maxRange; i++) {
+            sum += i;
+            queue.add(i);
         }
         return sum;
     }
