@@ -15,6 +15,8 @@ public class MainSort {
         MainSort.measureBigInsertion(5);
         MainSort.measureMediumSelection(5);
         MainSort.measureBigSelection(5);
+        MainSort.measureMediumBubble(5);
+        MainSort.measureBigBubble(5);
     }
 
     private static void measureMediumInsertion(final int n) {
@@ -54,6 +56,26 @@ public class MainSort {
             Sort.selectionSort(array);
             long time2 = System.currentTimeMillis();
             LOG.info("Big Selection | Time " + i + ": " + (time2 - time1) + "ms");
+        }
+    }
+
+    private static void measureMediumBubble(final int n) {
+        for (int i = 1; i <= n; i++) {
+            int[] array = mediumArray.clone();
+            long time1 = System.currentTimeMillis();
+            Sort.bubbleSort(array);
+            long time2 = System.currentTimeMillis();
+            LOG.info("Medium Bubble | Time " + i + ": " + (time2 - time1) + "ms");
+        }
+    }
+
+    private static void measureBigBubble(final int n) {
+        for (int i = 1; i <= n; i++) {
+            int[] array = bigArray.clone();
+            long time1 = System.currentTimeMillis();
+            Sort.bubbleSort(array);
+            long time2 = System.currentTimeMillis();
+            LOG.info("Big Bubble | Time " + i + ": " + (time2 - time1) + "ms");
         }
     }
 

@@ -14,7 +14,7 @@ class SortTest {
 
 
     @Test
-    void InsertionSort() {
+    void insertionSort() {
         int[] actual = array.clone();
         int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.insertionSort(actual);
@@ -24,10 +24,21 @@ class SortTest {
     }
 
     @Test
-    void SelectionSort() {
+    void selectionSort() {
         int[] actual = array.clone();
         int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.selectionSort(actual);
+        for (int i = 0; i < actual.length; i++) {
+            //LOG.debug(actual[i]);
+            assertEquals(expected[i], actual[i]);
+        }
+    }
+
+    @Test
+    void bubbleSort() {
+        int[] actual = array.clone();
+        int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
+        Sort.bubbleSort(actual);
         for (int i = 0; i < actual.length; i++) {
             //LOG.debug(actual[i]);
             assertEquals(expected[i], actual[i]);

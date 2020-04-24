@@ -39,4 +39,18 @@ public class Sort {
         }
 
     }
+
+    public static void bubbleSort(final int[] a) {
+        int element;
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 1; j < (a.length - i); j++) {
+                element = a[j];
+                if (a[j - 1] > element) {
+                    int smallerElement = element;
+                    a[j] = a[j - 1];
+                    a[j - 1] = smallerElement;
+                }
+            }
+        }
+    }
 }
