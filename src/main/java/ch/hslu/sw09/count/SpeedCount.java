@@ -83,7 +83,7 @@ public final class SpeedCount {
         long sum = 0;
         for (int i = 0; i < passes; i++) {
             counterCheck = false;
-            sum += speedTest(counterSync, 1000000, tester);
+            sum += speedTest(counterSync, 100000, tester);
             if (!counterCheck) {
                 LOG.info("counter failed!");
             }
