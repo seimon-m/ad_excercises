@@ -14,4 +14,29 @@ public class Sort {
             a[j] = element; // Element an der richtigen Stelle einfügen
         }
     }
+
+    public static void selectionSort(final int[] a) {
+        int minElement;
+        int minIndex;
+        int actualElement;
+        int j;
+        for (int i = 0; i < a.length; i++) {
+            actualElement = a[i];
+            minElement = a[i];
+            minIndex = i;
+            j = i;
+            while (j < a.length) {
+                if (a[j] < minElement) {
+                    minElement = a[j];
+                    minIndex = j;
+                }
+                j++;
+            }
+            if (actualElement != minElement) {
+                a[i] = minElement;
+                a[minIndex] = actualElement;
+            }
+        }
+
+    }
 }

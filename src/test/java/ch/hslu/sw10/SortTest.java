@@ -22,4 +22,15 @@ class SortTest {
             assertEquals(expected[i], actual[i]);
         }
     }
+
+    @Test
+    void SelectionSort() {
+        int[] actual = array.clone();
+        int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
+        Sort.selectionSort(actual);
+        for (int i = 0; i < actual.length; i++) {
+            //LOG.debug(actual[i]);
+            assertEquals(expected[i], actual[i]);
+        }
+    }
 }

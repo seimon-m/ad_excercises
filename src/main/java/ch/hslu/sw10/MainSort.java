@@ -1,7 +1,5 @@
 package ch.hslu.sw10;
 
-
-import ch.hslu.sw07.end.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,27 +11,49 @@ public class MainSort {
     private static final int[] bigArray = generateRandomArray(400000);
 
     public static void main(String[] args) {
-        MainSort.measureMediumArray(5);
-        MainSort.measureBigArray(5);
+        MainSort.measureMediumInsertion(5);
+        MainSort.measureBigInsertion(5);
+        MainSort.measureMediumSelection(5);
+        MainSort.measureBigSelection(5);
     }
 
-    private static void measureMediumArray(final int n) {
+    private static void measureMediumInsertion(final int n) {
         for (int i = 1; i <= n; i++) {
             int[] array = mediumArray.clone();
             long time1 = System.currentTimeMillis();
             Sort.insertionSort(array);
             long time2 = System.currentTimeMillis();
-            LOG.info("Medium Array | Time " + i + ": " + (time2 - time1) + "ms");
+            LOG.info("Medium Insertion | Time " + i + ": " + (time2 - time1) + "ms");
         }
     }
 
-    private static void measureBigArray(final int n) {
+    private static void measureBigInsertion(final int n) {
         for (int i = 1; i <= n; i++) {
             int[] array = bigArray.clone();
             long time1 = System.currentTimeMillis();
             Sort.insertionSort(array);
             long time2 = System.currentTimeMillis();
-            LOG.info("Big Array | Time " + i + ": " + (time2 - time1) + "ms");
+            LOG.info("Big Insertion | Time " + i + ": " + (time2 - time1) + "ms");
+        }
+    }
+
+    private static void measureMediumSelection(final int n) {
+        for (int i = 1; i <= n; i++) {
+            int[] array = mediumArray.clone();
+            long time1 = System.currentTimeMillis();
+            Sort.selectionSort(array);
+            long time2 = System.currentTimeMillis();
+            LOG.info("Medium Selection | Time " + i + ": " + (time2 - time1) + "ms");
+        }
+    }
+
+    private static void measureBigSelection(final int n) {
+        for (int i = 1; i <= n; i++) {
+            int[] array = bigArray.clone();
+            long time1 = System.currentTimeMillis();
+            Sort.selectionSort(array);
+            long time2 = System.currentTimeMillis();
+            LOG.info("Big Selection | Time " + i + ": " + (time2 - time1) + "ms");
         }
     }
 
