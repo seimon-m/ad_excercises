@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class MainSort {
     private static final Logger LOG = LogManager.getLogger(MainSort.class);
-    private static final int[] mediumArray = generateRandomArray(100000);
-    private static final int[] bigArray = generateRandomArray(400000);
+    private static final int[] mediumArray = generateRandomArray(50_000);
+    private static final int[] bigArray = generateRandomArray(100_000);
 
     public static void main(String[] args) {
         MainSort.measureMediumInsertion(5);
