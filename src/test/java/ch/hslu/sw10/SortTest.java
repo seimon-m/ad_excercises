@@ -24,6 +24,16 @@ class SortTest {
     }
 
     @Test
+    void insertionSort2() {
+        int[] actual = array.clone();
+        int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
+        Sort.insertionSort2(actual);
+        for (int i = 0; i < actual.length; i++) {
+            assertEquals(expected[i], actual[i]);
+        }
+    }
+
+    @Test
     void selectionSort() {
         int[] actual = array.clone();
         int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};

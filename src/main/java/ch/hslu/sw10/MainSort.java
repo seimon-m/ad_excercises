@@ -11,31 +11,53 @@ public class MainSort {
     private static final int[] bigArray = generateRandomArray(100_000);
 
     public static void main(String[] args) {
-        MainSort.measureMediumInsertion(5);
-        MainSort.measureBigInsertion(5);
+        MainSort.measureMediumInsertion1(5);
+        MainSort.measureBigInsertion1(5);
+        MainSort.measureMediumInsertion2(5);
+        MainSort.measureBigInsertion2(5);
         MainSort.measureMediumSelection(5);
         MainSort.measureBigSelection(5);
         MainSort.measureMediumBubble(5);
         MainSort.measureBigBubble(5);
     }
 
-    private static void measureMediumInsertion(final int n) {
+    private static void measureMediumInsertion1(final int n) {
         for (int i = 1; i <= n; i++) {
             int[] array = mediumArray.clone();
             long time1 = System.currentTimeMillis();
             Sort.insertionSort(array);
             long time2 = System.currentTimeMillis();
-            LOG.info("Medium Insertion | Time " + i + ": " + (time2 - time1) + "ms");
+            LOG.info("Medium Insertion 1 | Time " + i + ": " + (time2 - time1) + "ms");
         }
     }
 
-    private static void measureBigInsertion(final int n) {
+    private static void measureBigInsertion1(final int n) {
         for (int i = 1; i <= n; i++) {
             int[] array = bigArray.clone();
             long time1 = System.currentTimeMillis();
             Sort.insertionSort(array);
             long time2 = System.currentTimeMillis();
-            LOG.info("Big Insertion | Time " + i + ": " + (time2 - time1) + "ms");
+            LOG.info("Big Insertion 1 | Time " + i + ": " + (time2 - time1) + "ms");
+        }
+    }
+
+    private static void measureMediumInsertion2(final int n) {
+        for (int i = 1; i <= n; i++) {
+            int[] array = mediumArray.clone();
+            long time1 = System.currentTimeMillis();
+            Sort.insertionSort2(array);
+            long time2 = System.currentTimeMillis();
+            LOG.info("Medium Insertion 2 | Time " + i + ": " + (time2 - time1) + "ms");
+        }
+    }
+
+    private static void measureBigInsertion2(final int n) {
+        for (int i = 1; i <= n; i++) {
+            int[] array = bigArray.clone();
+            long time1 = System.currentTimeMillis();
+            Sort.insertionSort2(array);
+            long time2 = System.currentTimeMillis();
+            LOG.info("Big Insertion 2 | Time " + i + ": " + (time2 - time1) + "ms");
         }
     }
 
