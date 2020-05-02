@@ -12,7 +12,12 @@ public class MyApp {
         heap.insert(10);
         heap.insert(5);
         heap.insert(2);
+        LOG.info(heap.getMax());
         heap.insert(10);
         heap.insert(20);
+        LOG.info(heap.getMax());
+        heap.insert(1);
+        heap.insert(70);
+        LOG.info(heap.getMax());
     }
 }

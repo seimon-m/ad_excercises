@@ -8,7 +8,8 @@ public class FixedSizeHeap implements IntegerHeap {
     private static final Logger LOG = LogManager.getLogger(FixedSizeHeap.class);
     private int[] array;
     private int size = 0;
-    private int tail = 0;
+    private int tail = -1;
+    private int count = 0;
 
     public FixedSizeHeap(final int size) {
         array = new int[size];
@@ -16,48 +17,44 @@ public class FixedSizeHeap implements IntegerHeap {
 
     @Override
     public int getMax() {
-        int max;
-        if (true) {
+        final int max;
+        if (!isEmpty()) {
             max = array[0];
-            LOG.debug(max);
             array[0] = array[tail];
-            array[0] = 0;
-
-            LOG.info("Array before rearrange down:");
+            array[tail] = 0;
+            LOG.debug("Array before rearrange down:");
             for (int i = 0; i < array.length; i++) {
-                LOG.info(array[i]);
+                LOG.debug(array[i]);
             }
-
             rearrangeDown(0);
-
-            LOG.info("Array after rearrange down:");
+            LOG.debug("Array after rearrange down:");
             for (int i = 0; i < array.length; i++) {
-                LOG.info(array[i]);
+                LOG.debug(array[i]);
             }
-
             tail--;
             size--;
+            return max;
         } else {
             throw new IllegalStateException("heap empty");
         }
-        return max;
     }
+
 
     @Override
     public void insert(int a) {
         if (!isFull()) {
-            array[tail] = a;
-            LOG.info("Array before rearrange up:");
-            for (int i = 0; i < array.length; i++) {
-                LOG.info(array[i]);
-            }
-            rearrangeUp(tail);
-            LOG.info("Array after rearrange up:");
-            for (int i = 0; i < array.length; i++) {
-                LOG.info(array[i]);
-            }
+            array[tail + 1] = a;
             tail++;
             size++;
+            LOG.debug("Array before rearrange up:");
+            for (int i = 0; i < array.length; i++) {
+                LOG.debug(array[i]);
+            }
+            rearrangeUp(tail);
+            LOG.debug("Array after rearrange up:");
+            for (int i = 0; i < array.length; i++) {
+                LOG.debug(array[i]);
+            }
         } else {
             throw new IllegalStateException("heap full");
         }
@@ -72,16 +69,20 @@ public class FixedSizeHeap implements IntegerHeap {
         }
     }
 
-    private void rearrangeDown(int index) {
-        int IndexLeftChild = (2 * index) + 1;
-        int IndexRightChild = 2 * (index + 1);
-        if (array[index] < array[IndexLeftChild] && index < tail) {
-            swapElement(IndexLeftChild, index);
-            rearrangeDown(IndexLeftChild);
-        }
-        if (array[index] < array[IndexRightChild] && index < tail) {
-            swapElement(IndexRightChild, index);
-            rearrangeDown(IndexRightChild);
+    private void rearrangeDown(int parentIndex) {
+        int indexLeftChild = (2 * parentIndex) + 1;
+        int indexRightChild = 2 * (parentIndex + 1);
+        if (indexLeftChild < array.length && indexRightChild < array.length) {
+            count++;
+            LOG.debug("rearrange down durchlauf: " + count);
+            if (array[parentIndex] < array[indexLeftChild] && parentIndex <= tail) {
+                swapElement(indexLeftChild, parentIndex);
+                rearrangeDown(indexLeftChild);
+            }
+            if (array[parentIndex] < array[indexRightChild] && parentIndex <= tail) {
+                swapElement(indexRightChild, parentIndex);
+                rearrangeDown(indexRightChild);
+            }
         }
     }
 
@@ -89,7 +90,7 @@ public class FixedSizeHeap implements IntegerHeap {
         int temp = array[indexA];
         array[indexA] = array[indexB];
         array[indexB] = temp;
-        LOG.info("Index " + indexA + " and " + indexB + " swapped.");
+        LOG.debug("Index " + indexA + " and " + indexB + " swapped.");
     }
 
     @Override
@@ -99,11 +100,6 @@ public class FixedSizeHeap implements IntegerHeap {
 
     @Override
     public boolean isEmpty() {
-//        return size == 0;
-        if (size == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return size == 0;
     }
 }
