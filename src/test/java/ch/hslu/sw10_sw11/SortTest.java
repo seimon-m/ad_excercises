@@ -56,7 +56,7 @@ class SortTest {
 
     @Test
     void quicksortChar1() {
-        char[] actual = charArray.clone();
+        char[] actual = {'b', 's', 'u', 'a', 'z', 'y', 's'};
         final char[] expected = {'a', 'b', 's', 's', 'u', 'y', 'z'};
         Sort.quicksort(actual, 0, 6);
         for (int i = 0; i < actual.length; i++) {
@@ -78,7 +78,7 @@ class SortTest {
 
     @Test
     void quicksortInt1() {
-        int[] actual = array.clone();
+        int[] actual = {5, 2, 8, 0, 22, -7, 12, 5, 19};
         final int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.quicksort(actual, 0, 8);
         for (int i = 0; i < actual.length; i++) {
@@ -89,7 +89,7 @@ class SortTest {
 
     @Test
     void quicksortInt2() {
-        int[] actual = array.clone();
+        int[] actual = {5, 2, 8, 0, 22, -7, 12, 5, 19};
         final int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.quicksort(actual);
         for (int i = 0; i < actual.length; i++) {

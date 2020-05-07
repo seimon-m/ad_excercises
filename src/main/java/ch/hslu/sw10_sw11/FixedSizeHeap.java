@@ -62,10 +62,10 @@ public class FixedSizeHeap implements IntegerHeap {
     }
 
     private void rearrangeUp(int index) {
-        int IndexFather = (index - 1) / 2;
-        if (array[IndexFather] < array[index] && index > 0) {
-            swapElement(IndexFather, index);
-            rearrangeUp(IndexFather);
+        int indexFather = (index - 1) / 2;
+        if (array[indexFather] < array[index] && index > 0) {
+            swapElement(indexFather, index);
+            rearrangeUp(indexFather);
         }
     }
 
