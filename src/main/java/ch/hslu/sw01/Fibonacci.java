@@ -10,19 +10,17 @@ public class Fibonacci {
     public static void main(final String[] args) {
         for (int i = 1; i <= 7; i++) {
             LOG.info(fiboRec1(i));
-
         }
         fiboIter(7);
+        LOG.info(fiboRec2(10));
     }
 
     public static void fiboIter(int n) {
-
         int z0 = 0;
         int z1 = 1;
         int sum = 0;
 
         for (int i = 0; i <= n; i++) {
-
             LOG.info(z0);
             sum = z0 + z1;
             z0 = z1;
@@ -36,6 +34,16 @@ public class Fibonacci {
             return 1;
         }
         return fiboRec1(n - 1) + fiboRec1(n - 2); // Rekursionvorschrift
+    }
+
+    /**
+     * Berechnet den Fibonacci Wert für n.
+     *
+     * @param n für die Fibonacci Berechnung.
+     * @return Resultat der Fibonacci Berechnung.
+     */
+    public static int fiboRec2(final int n) {
+        return n > 1 ? fiboRec2(n - 1) + fiboRec2(n - 2) : n;
     }
 }
 
