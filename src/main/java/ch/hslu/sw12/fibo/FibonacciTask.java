@@ -23,19 +23,28 @@ import java.util.concurrent.RecursiveTask;
 @SuppressWarnings("serial")
 public final class FibonacciTask extends RecursiveTask<Long> {
 
-    private final int n;
+    private final long n;
 
     /**
      * Erzeugt einen Fibonacci Task.
      *
      * @param n für die Fibonacci Berechnung.
      */
-    public FibonacciTask(final int n) {
+    public FibonacciTask(final long n) {
         this.n = n;
     }
 
     @Override
     protected Long compute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (n > 1) {
+            FibonacciTask one = new FibonacciTask(n - 1);
+            FibonacciTask two = new FibonacciTask(n - 2);
+            one.fork();
+            two.fork();
+            return one.join() + two.join();
+        } else {
+            return n;
+        }
+
     }
 }
