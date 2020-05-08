@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class DemoFibonacciCalc {
 
-    private static final Logger LOG = LogManager.getLogger(ch.hslu.ad.exercise.n4.fibo.DemoFibonacciCalc.class);
+    private static final Logger LOG = LogManager.getLogger(ch.hslu.sw12.fibo.DemoFibonacciCalc.class);
 
     /**
      * Privater Konstruktor.

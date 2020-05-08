@@ -41,29 +41,50 @@ public final class DemoMergesort {
      * @param args not used.
      */
     public static void main(final String[] args) {
-        final int size = 300_000;
+        final int size = 300_000_000;
         final int[] array = new int[size];
+        LOG.info("THRESHOLD = 1000");
+
+        /* Array befüllen */
         final ForkJoinPool pool = new ForkJoinPool();
         RandomInitTask initTask = new RandomInitTask(array, 100);
         pool.invoke(initTask);
+
+        /* Array aufsummieren (Checksumme 1) */
         SumTask sumTask = new SumTask(array);
         long result = pool.invoke(sumTask);
-        LOG.info("Init. Checksum  : " + result);
+        LOG.debug("Init Checksum 1          : " + result);
+
+        /* Sortieren mit nebenläufigem Mergesort */
         final MergesortTask sortTask = new MergesortTask(array);
+        long time1 = System.currentTimeMillis();
         pool.invoke(sortTask);
-        LOG.info("Conc. Mergesort : ? sec.");
+        long time2 = System.currentTimeMillis();
+        LOG.info("Time conc. Mergesort     : " + (time2 - time1) / 1000 + " sec");
+
+        /* Array erneut aufsummieren (Checksumme 1) */
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Merge Checksum  : " + result);
+        LOG.debug("Mergesort Checksum 1     : " + result);
+
+        /* Array neu befüllen */
         initTask = new RandomInitTask(array, 100);
         pool.invoke(initTask);
+
+        /* Array aufsummieren (Checksumme 2) */
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Init. checksum  : " + result);
+        LOG.debug("Init Checksum 2          : " + result);
+
+        /* Sortieren mit synchronem Mergesort */
+        long time3 = System.currentTimeMillis();
         MergesortRecursive.mergeSort(array);
-        LOG.info("MergesortRec.   : ? sec.");
+        long time4 = System.currentTimeMillis();
+        LOG.info("Time normal Mergesort    : " + (time4 - time3) / 1000 + " sec");
+
+        /* Array erneut aufsummieren (Checksumme 2) */
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Sort checksum   : " + result);
+        LOG.debug("Mergesort Checksum 2     : " + result);
     }
 }

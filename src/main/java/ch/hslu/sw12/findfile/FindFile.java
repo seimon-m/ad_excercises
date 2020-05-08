@@ -25,7 +25,7 @@ import java.io.File;
  */
 public final class FindFile {
 
-    private static final Logger LOG = LogManager.getLogger(ch.hslu.ad.exercise.n4.findfile.FindFile.class);
+    private static final Logger LOG = LogManager.getLogger(ch.hslu.sw12.findfile.FindFile.class);
 
     /**
      * Sucht ein File in einem Verzeichnis.
