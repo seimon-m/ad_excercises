@@ -42,39 +42,57 @@ public final class DemoQuicksort {
      * @param args not used.
      */
     public static void main(final String[] args) {
-        final int size = 300_000_000;
+        final int size = 500_000_000;
         final int[] array = new int[size];
+
         final ForkJoinPool pool = new ForkJoinPool();
         RandomInitTask initTask = new RandomInitTask(array, 100);
         pool.invoke(initTask);
+
         SumTask sumTask = new SumTask(array);
         long result = pool.invoke(sumTask);
-        LOG.info("Init. Checksum : " + result);
+        LOG.debug("Init. Checksum : " + result);
+
         final QuicksortTask sortTask = new QuicksortTask(array);
+        long time1 = System.currentTimeMillis();
         pool.invoke(sortTask);
-        LOG.info("QuicksortTask  : ? sec.");
+        long time2 = System.currentTimeMillis();
+        LOG.info("QuicksortTask  : " + (time2 - time1) / 1000 + " sec");
+
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Conc. Checksum : " + result);
+        LOG.debug("Conc. Checksum : " + result);
+
         initTask = new RandomInitTask(array, 100);
         pool.invoke(initTask);
+
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Init. Checksum : " + result);
+        LOG.debug("Init. Checksum : " + result);
+
+        long time3 = System.currentTimeMillis();
         QuicksortRecursive.quicksort(array);
-        LOG.info("QuicksortRec.  : ? sec.");
+        long time4 = System.currentTimeMillis();
+        LOG.info("QuicksortRec.  : " + (time4 - time3) / 1000 + " sec");
+
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Recu. Checksum : " + result);
+        LOG.debug("Recu. Checksum : " + result);
+
         initTask = new RandomInitTask(array, 100);
         pool.invoke(initTask);
+
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Init. checksum : " + result);
+        LOG.debug("Init. checksum : " + result);
+
+        long time5 = System.currentTimeMillis();
         Arrays.sort(array);
-        LOG.info("Arrays.sort    : ? sec.");
+        long time6 = System.currentTimeMillis();
+        LOG.info("Arrays.sort    : " + (time6 - time5) / 1000 + " sec");
+
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.info("Sort checksum  : " + result);
+        LOG.debug("Sort checksum  : " + result);
     }
 }

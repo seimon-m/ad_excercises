@@ -24,39 +24,79 @@ public class QuicksortRecursive {
      * public method exposed to client, sorts given array using QuickSort
      * Algorithm in Java.
      *
-     * @param array input array.
+     * @param a input array.
      */
-    public static void quicksort(int[] array) {
-        QuicksortRecursive.quicksort(array, 0, array.length - 1);
+    public static final void quicksort(final int[] a) {
+        quicksort(a, 0, a.length - 1);
     }
 
     /**
      * Recursive quicksort logic.
      *
-     * @param array    input array.
-     * @param startIdx start index of the array.
-     * @param endIdx   end index of the array.
+     * @param a     input array.
+     * @param left  start index of the array.
+     * @param right end index of the array.
      */
-    public static void quicksort(int[] array, int startIdx, int endIdx) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static final void quicksort(final int[] a, final int left, final int right) {
+        int up = left;                 // linke Grenze
+        int down = right - 1;           // rechte Grenze (ohne Pivot)
+        int t = a[right];              // rechtes Element als Pivot
+        boolean allChecked = false;
+        do {
+            while (a[up] < t) {
+                up++;                   // suche grösseres (>=) Element von links
+            }
+            while ((a[down] > t) && (down > up)) {
+                down--;                 // suche kleineres (<=) Element von rechts an
+            }
+            if (down > up) {            // solange keine Überschneidung
+                exchange(a, up, down);
+                up++;                   // linke und rechte Grenze verschieben
+                down--;
+            } else {
+                allChecked = true;      // Austausch beendet
+            }
+        } while (!allChecked);
+        exchange(a, up, right);         // Trennelement an endgültige Position (a[up)
+        if (left < (up - 1)) {          // linke Hälfte
+            quicksort(a, left, (up - 1));
+        }
+        if ((up + 1) < right) {         // rechte Hälfte, ohne Pivot
+            quicksort(a, (up + 1), right);
+        }
     }
 
     /**
-     * Divides array from pivot, left side contains elements less than Pivot
-     * while right side contains elements greater than pivot.
+     * Vertauscht zwei bestimmte Zahlen im Array.
      *
-     * @param array array to partitioned.
-     * @param left  lower bound of the array.
-     * @param right upper bound of the array.
-     * @return the partition index.
+     * @param a           int-Array
+     * @param firstIndex  Index der ersten Zahl
+     * @param secondIndex Index der zweiten Zahl
      */
-    public static int partition(int[] array, int left, int right) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static final void exchange(final int[] a, final int firstIndex, final int secondIndex) {
+        int tmp;
+        tmp = a[firstIndex];
+        a[firstIndex] = a[secondIndex];
+        a[secondIndex] = tmp;
     }
 
-    private static void exchange(final int[] array, final int i, final int j) {
-        int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+    public static void insertionSort(int[] arr, int low, int n) {
+        // Start from second element (element at index 0
+        // is already sorted)
+        for (int i = low + 1; i <= n; i++) {
+            int value = arr[i];
+            int j = i;
+
+            // Find the index j within the sorted subset arr[0..i-1]
+            // where element arr[i] belongs
+            while (j > low && arr[j - 1] > value) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+            // Note that subarray arr[j..i-1] is shifted to
+            // the right by one position i.e. arr[j+1..i]
+
+            arr[j] = value;
+        }
     }
 }
