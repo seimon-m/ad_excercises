@@ -38,10 +38,11 @@ public final class FindFile {
         if (list != null) {
             for (File file : list) {
                 if (file.isDirectory()) {
+//                    LOG.debug(file);
                     findFile(name, file);
                 } else if (name.equalsIgnoreCase(file.getName())) {
-                    LOG.info(file.getParentFile());
-                    return;
+                    LOG.info(file);
+                    break;
                 }
             }
         }

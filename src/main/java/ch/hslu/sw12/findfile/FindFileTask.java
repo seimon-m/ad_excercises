@@ -15,6 +15,9 @@
  */
 package ch.hslu.sw12.findfile;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.util.concurrent.CountedCompleter;
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,6 +27,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @SuppressWarnings("serial")
 public final class FindFileTask extends CountedCompleter<String> {
+
+    private static final Logger LOG = LogManager.getLogger(ch.hslu.sw12.findfile.FindFileTask.class);
 
     private final String regex;
     private final File dir;
@@ -39,14 +44,29 @@ public final class FindFileTask extends CountedCompleter<String> {
         this(null, regex, dir, new AtomicReference<>(null));
     }
 
-    private FindFileTask(final CountedCompleter<?> parent, final String regex, final File dir,
-                         final AtomicReference<String> result) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private FindFileTask(final CountedCompleter<?> parent, final String regex, final File dir, final AtomicReference<String> result) {
+        super(parent);
+        this.regex = regex;
+        this.dir = dir;
+        this.result = result;
     }
 
     @Override
     public void compute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final File[] list = dir.listFiles();
+        if (list != null) {
+            for (File file : list) {
+                if (file.isDirectory()) {
+                    this.addToPendingCount(1);
+                    final FindFileTask task = new FindFileTask(regex, file);
+                    task.fork();
+                } else if (regex.equalsIgnoreCase(file.getName())) {
+                    this.result.set(file.toString());
+                    quietlyCompleteRoot();
+                }
+            }
+        }
+        tryComplete();
     }
 
     @Override
