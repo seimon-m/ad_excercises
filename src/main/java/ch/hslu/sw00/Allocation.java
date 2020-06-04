@@ -49,6 +49,6 @@ final public class Allocation implements Comparable<Allocation> {
 
     @Override
     public String toString() {
-        return "Allocation[Address:" + this.startAdress + "; Size:" + this.memorySize + "]";
+        return "Allocation[Address: " + this.startAdress + "; Size: " + this.memorySize + "]";
     }
 }
