@@ -5,7 +5,7 @@ import java.util.EmptyStackException;
 public class Stack implements StackInterface {
     private String[] stack;
     private int actualSize = 0;
-    private int lastFilledIndex = -1;
+    private int headIndex = -1;
 
     public Stack(final int size) {
         if (size < 0) {
@@ -17,9 +17,9 @@ public class Stack implements StackInterface {
     @Override
     public String push(String string) {
         if (!isFull()) {
-            stack[this.lastFilledIndex + 1] = string;
-            this.lastFilledIndex++;
-            actualSize++;
+            stack[this.headIndex + 1] = string;
+            this.headIndex++;
+            this.actualSize++;
             return string;
         } else {
             throw new StackOverflowError();
@@ -29,9 +29,9 @@ public class Stack implements StackInterface {
     @Override
     public String pop() {
         if (!isEmpty()) {
-            String value = stack[this.lastFilledIndex];
-            stack[this.lastFilledIndex] = null; // Referenz definitiv entfernen
-            this.lastFilledIndex--;
+            String value = stack[this.headIndex];
+            stack[this.headIndex] = null; // Referenz definitiv entfernen
+            this.headIndex--;
             actualSize--;
             return value;
         } else {
@@ -46,19 +46,11 @@ public class Stack implements StackInterface {
 
     @Override
     public boolean isEmpty() {
-        if (this.actualSize == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.actualSize == 0;
     }
 
     @Override
     public boolean isFull() {
-        if (this.actualSize == stack.length) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.actualSize == stack.length;
     }
 }
