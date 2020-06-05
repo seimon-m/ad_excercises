@@ -1,4 +1,6 @@
 package ch.hslu.sw02;
+import ch.hslu.sw00.Allocation;
+
 import java.util.Objects;
 
 public class Node {
@@ -10,9 +12,9 @@ public class Node {
         this.value = alloc;
     }
 
-    public Node(Allocation alloc, Node currentHead) {
+    public Node(Allocation alloc, Node nextNode) {
         this.value = alloc;
-        this.nextNode = currentHead;
+        this.nextNode = nextNode;
     }
 
     public Allocation getValue() {

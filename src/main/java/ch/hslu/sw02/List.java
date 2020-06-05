@@ -1,5 +1,6 @@
 package ch.hslu.sw02;
 
+import ch.hslu.sw00.Allocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +43,9 @@ public class List {
     public Allocation getFirstElement() {
         Node oldHead = head;
         this.remove(head.getValue());
-        this.head = head.getNextNode();
+        if (oldHead.hasNextNode()) {
+            this.head = head.getNextNode();
+        }
         return oldHead.getValue();
     }
 
@@ -55,12 +58,13 @@ public class List {
             if (currentNode.getValue().equals(alloc)) {
                 if (previousNode == null) {
                     this.head = currentNode.getNextNode();
-                    currentNode = this.head;
+                    //currentNode = this.head;
                 } else {
                     previousNode.setNextNode(currentNode.getNextNode());
-                    currentNode = previousNode;
+                    //currentNode = previousNode;
                 }
                 this.size--;
+                return;
             }
             previousNode = currentNode;
             currentNode = currentNode.getNextNode();

@@ -1,5 +1,6 @@
 package ch.hslu.sw02;
 
+import ch.hslu.sw00.Allocation;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -99,5 +100,19 @@ class ListTest {
         list.add(alloc3);
         list.remove(alloc1);
         assertEquals(2, list.size());
+    }
+
+    @Test
+    void testRemove3() {
+        Allocation alloc1 = new Allocation(0, 5);
+        Allocation alloc2 = new Allocation(2, 9);
+        Allocation alloc3 = new Allocation(3, 7);
+        List list = new List();
+        list.add(alloc1);
+        list.add(alloc2);
+        list.add(alloc3);
+        list.remove(alloc2);
+        list.remove(alloc1);
+        assertEquals(alloc3, list.getFirstElement());
     }
 }
