@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
+// Integer: Returns a hash code value for this object, equal to the primitive int value represented by this Integer object.
+
 public class Hashset implements HashsetInterface {
 
     private static final Logger LOG = LogManager.getLogger(Hashset.class);
@@ -37,8 +39,8 @@ public class Hashset implements HashsetInterface {
 
     @Override
     public boolean search(Integer element) {
-        for (int i = 0; i < storage.length; i++) {
-            if (element.equals(storage[i])) {
+        for (int value : storage) {
+            if (element.equals(value)) {
                 return true;
             }
         }
