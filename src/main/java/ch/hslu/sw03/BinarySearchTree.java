@@ -22,60 +22,36 @@ public class BinarySearchTree implements BinaryTreeInterface {
         TreeNode node12 = new TreeNode(12);
 
         this.root = node05;
-        node05.leftChild(node03);
-        node03.leftChild(node01);
-        node03.rightChild(node04);
-        node05.rightChild(node06);
-        node06.rightChild(node08);
-        node08.leftChild(node07);
-        node08.rightChild(node09);
-        node09.rightChild(node10);
-        node10.rightChild(node12);
-
-    }
-
-    public TreeNode getRoot() {
-        return this.root;
-    }
-
-    public void inorder(TreeNode root) {
-        if (this.root == null) {
-            LOG.info("Tree is empty");
-        }
-
-        if (root.hasLeftChild()) {
-            inorder(root.getLeftChild());
-        } else {
-            LOG.info(root.getValue());
-        }
+        node05.setLeftChild(node03);
+        node03.setLeftChild(node01);
+        node03.setRightChild(node04);
+        node05.setRightChild(node06);
+        node06.setRightChild(node08);
+        node08.setLeftChild(node07);
+        node08.setRightChild(node09);
+        node09.setRightChild(node10);
+        node10.setRightChild(node12);
     }
 
     @Override
     public boolean insert(TreeNode root, int element) {
-        LOG.debug(root.toString());
-        if (this.root == null) {
-            this.root = new TreeNode(element);
-            return true;
-        }
-
-        if (element == root.getValue()) {
-            return true;
-        }
-        if (element < root.getValue()) {
-            if (root.getLeftChild() == null) {
-                root.leftChild(new TreeNode(element));
+        if (root.getValue() > element) {
+            if (root.hasLeftChild()) {
+                return insert(root.getLeftChild(), element);
+            } else {
+                root.setLeftChild(new TreeNode(element));
                 return true;
             }
-            return insert(root.getLeftChild(), element);
-        }
-        if (element > root.getValue()) {
-            if (root.getRightChild() == null) {
-                root.leftChild(new TreeNode(element));
+        } else if (root.getValue() <= element) {
+            if (root.hasRightChild()) {
+                return insert(root.getRightChild(), element);
+            } else {
+                root.setRightChild(new TreeNode(element));
                 return true;
             }
-            return insert(root.getRightChild(), element);
+        } else {
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -85,26 +61,15 @@ public class BinarySearchTree implements BinaryTreeInterface {
 
     @Override
     public boolean search(TreeNode root, int element) {
-        LOG.debug(root.toString());
-        if (root == null) {
+        if (root.getValue() == element) {
+            return true;
+        } else if (root.getValue() > element && root.hasLeftChild()) {
+            return search(root.getLeftChild(), element);
+        } else if (root.getValue() <= element && root.hasRightChild()) {
+            return search(root.getRightChild(), element);
+        } else {
             return false;
         }
-        if (element == root.getValue()) {
-            return true;
-        }
-        if (element < root.getValue()) {
-            if (root.getLeftChild() == null) {
-                return false;
-            }
-            return search(root.getLeftChild(), element);
-        }
-        if (element > root.getValue()) {
-            if (root.getRightChild() == null) {
-                return false;
-            }
-            return search(root.getRightChild(), element);
-        }
-        return false;
     }
 
     @Override
@@ -120,5 +85,26 @@ public class BinarySearchTree implements BinaryTreeInterface {
     @Override
     public int getWeight() {
         return 0;
+    }
+
+    public TreeNode getRoot() {
+        return this.root;
+    }
+
+    public void inorder(TreeNode root) {
+        if (root.hasLeftChild()) {
+            inorder(root.getLeftChild());
+        }
+        LOG.info("Traversed Node: " + root.getValue());
+        if (root.hasRightChild()) {
+            inorder(root.getRightChild());
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "BinarySearchTree{" +
+                "root=" + root +
+                '}';
     }
 }

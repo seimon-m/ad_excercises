@@ -1,10 +1,13 @@
 package ch.hslu.sw03;
 
-import ch.hslu.sw02.Node;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
 public class TreeNode {
+
+    private static final Logger LOG = LogManager.getLogger(TreeNode.class);
 
     private TreeNode leftChild;
     private TreeNode rightChild;
@@ -18,11 +21,11 @@ public class TreeNode {
         return this.value;
     }
 
-    public void leftChild(final TreeNode leftChild) {
+    public void setLeftChild(final TreeNode leftChild) {
         this.leftChild = leftChild;
     }
 
-    public void rightChild(final TreeNode rightChild) {
+    public void setRightChild(final TreeNode rightChild) {
         this.rightChild = rightChild;
     }
 
@@ -35,19 +38,11 @@ public class TreeNode {
     }
 
     public boolean hasLeftChild() {
-        if (this.leftChild != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.leftChild != null;
     }
 
     public boolean hasRightChild() {
-        if (this.rightChild != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.rightChild != null;
     }
 
     @Override
@@ -70,9 +65,9 @@ public class TreeNode {
     @Override
     public String toString() {
         return "TreeNode{" +
-                "leftChild = " + leftChild +
+                " value = " + value +
+                ", leftChild = " + leftChild +
                 ", rightChild = " + rightChild +
-                ", value = " + value +
                 '}';
     }
 }

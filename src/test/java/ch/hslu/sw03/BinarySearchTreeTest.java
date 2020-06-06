@@ -1,51 +1,55 @@
 package ch.hslu.sw03;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BinarySearchTreeTest {
 
+    private static final Logger LOG = LogManager.getLogger(BinarySearchTreeTest.class);
+
     @Test
     void testSearch1() {
         BinarySearchTree tree = new BinarySearchTree();
         TreeNode root = tree.getRoot();
-        assertEquals(true, tree.search(root, 12));
+        assertTrue(tree.search(root, 12));
     }
 
     @Test
     void testSearch2() {
         BinarySearchTree tree = new BinarySearchTree();
         TreeNode root = tree.getRoot();
-        assertEquals(true, tree.search(root, 7));
+        assertTrue(tree.search(root, 7));
     }
 
     @Test
     void testSearch3() {
         BinarySearchTree tree = new BinarySearchTree();
         TreeNode root = tree.getRoot();
-        assertEquals(true, tree.search(root, 3));
+        assertTrue(tree.search(root, 3));
     }
 
     @Test
     void testSearch4() {
         BinarySearchTree tree = new BinarySearchTree();
         TreeNode root = tree.getRoot();
-        assertEquals(false, tree.search(root, 2));
+        assertFalse(tree.search(root, 2));
     }
 
     @Test
     void testInsert1() {
         BinarySearchTree tree = new BinarySearchTree();
         TreeNode root = tree.getRoot();
-        assertEquals(true, tree.insert(root, 2));
+        assertTrue(tree.insert(root, 2));
     }
 
     @Test
     void testInsert2() {
         BinarySearchTree tree = new BinarySearchTree();
         tree.insert(tree.getRoot(), 2);
-        assertEquals(true, tree.search(tree.getRoot(), 2));
+        assertTrue(tree.search(tree.getRoot(), 2));
     }
 
     @Test
@@ -53,7 +57,8 @@ class BinarySearchTreeTest {
         BinarySearchTree tree = new BinarySearchTree();
         TreeNode root = tree.getRoot();
         tree.insert(root, 11);
-        assertEquals(true, tree.search(root, 11));
+        LOG.debug(tree.toString());
+        assertTrue(tree.search(root, 11));
     }
 
     @Test
@@ -61,6 +66,13 @@ class BinarySearchTreeTest {
         BinarySearchTree tree = new BinarySearchTree();
         TreeNode root = tree.getRoot();
         tree.insert(root, 13);
-        assertEquals(true, tree.search(root, 13));
+        assertTrue(tree.search(root, 13));
+    }
+
+    @Test
+    void testInorder() {
+        BinarySearchTree tree = new BinarySearchTree();
+        TreeNode root = tree.getRoot();
+        tree.inorder(root);
     }
 }
