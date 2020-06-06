@@ -59,4 +59,28 @@ class HashsetCollisionTest {
         hashset.add(22);
         assertEquals(2, hashset.searchInt(22));
     }
+
+    @Test
+    void rotateAdd() {
+        HashsetCollision hashset = new HashsetCollision();
+        hashset.add(5);
+        hashset.add(15);
+        hashset.add(25);
+        hashset.add(35);
+        hashset.add(45);
+        hashset.add(55);
+        assertEquals(6, hashset.getSize());
+    }
+
+    @Test
+    void rotateSearch() {
+        HashsetCollision hashset = new HashsetCollision();
+        hashset.add(6);
+        hashset.add(16);
+        hashset.add(26);
+        hashset.add(36);
+        hashset.add(46);
+        hashset.add(56);
+        assertEquals(1, hashset.searchInt(56));
+    }
 }

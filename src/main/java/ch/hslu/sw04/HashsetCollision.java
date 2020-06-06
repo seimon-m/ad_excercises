@@ -5,11 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
-/**
+/*
  * Negative values and zero are not allowed.
  * Zero is free, -1 is a tombstone.
- * <p>
- * TODO: search und add funktionieren nur bis array ende. Diese müssten je nachdem auch wieder bei Index 0 anfangen. -> Wert modulo rechnen
  */
 
 public class HashsetCollision implements HashsetInterface {
@@ -17,17 +15,14 @@ public class HashsetCollision implements HashsetInterface {
     private static final Logger LOG = LogManager.getLogger(HashsetCollision.class);
     private int[] storage = new int[10];
     private int size;
+    private final byte TOMBSTONE = -1;
 
     private int generateIndexFromHash(final Integer element) {
         return Math.abs(element.hashCode() % storage.length);
     }
 
     public boolean isFull() {
-        if (this.size == storage.length) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.size == storage.length;
     }
 
     @Override
@@ -38,31 +33,32 @@ public class HashsetCollision implements HashsetInterface {
         if (this.isFull()) {
             throw new ArrayIndexOutOfBoundsException();
         }
+        int index = generateIndexFromHash(element);
 
-        if (storage[generateIndexFromHash(element)] == 0 || storage[generateIndexFromHash(element)] == -1) {
-            storage[generateIndexFromHash(element)] = element;
+        if (storage[index] == 0 || storage[index] == TOMBSTONE) {
+            storage[index] = element;
             size++;
             LOG.debug(toString());
             return true;
         }
-        int index = generateIndexFromHash(element);
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[index] == 0 || storage[index] == -1) {
-                storage[index] = element;
-                size++;
-                LOG.debug(toString());
-                return true;
-            } else {
+
+        while (storage[index] != 0 && storage[index] != TOMBSTONE) {
+            if (index < storage.length - 1) {
                 index++;
+            } else {
+                index = 0;
             }
         }
-        return false;
+        storage[index] = element;
+        size++;
+        LOG.debug(toString());
+        return true;
     }
 
     @Override
     public Integer remove(final Integer element) {
         Integer returnValue = storage[generateIndexFromHash(element)];
-        storage[generateIndexFromHash(element)] = -1;
+        storage[generateIndexFromHash(element)] = TOMBSTONE;
         size--;
         LOG.info(toString());
         return returnValue;
@@ -75,18 +71,23 @@ public class HashsetCollision implements HashsetInterface {
 
     public int searchInt(Integer element) {
         int index = generateIndexFromHash(element);
-
+        int originalIndex = index;
         if (element.equals(storage[index])) {
             return index;
         }
-        for (int j = index; j < storage.length; j++) {
-            if (storage[j] == 0) {
-                return -1;
-            } else if (element.equals(storage[j])) {
-                return j;
+        index++;
+        while (storage[index] != 0) {
+            if (index == originalIndex) {
+                return -2; // Not found
+            } else if (element.equals(storage[index])) {
+                return index;// Found
+            } else if (index < storage.length - 1) {
+                index++;
+            } else {
+                index = 0;
             }
         }
-        return -2;
+        return index;
     }
 
     @Override
