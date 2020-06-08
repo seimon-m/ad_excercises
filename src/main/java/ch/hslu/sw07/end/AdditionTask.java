@@ -31,26 +31,23 @@ public class AdditionTask implements Runnable {
     @Override
     public void run() {
         this.runThread = Thread.currentThread();
-
         // Initialisierungsphase
         long sum = 0;
-
         // Arbeitsphase
         for (int i = this.rangeBegin; i <= this.rangeEnd && !isStopped; i++) {
             sum += i;
             try {
                 Thread.sleep(15);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error(e);
+                stopRequest();
             }
         }
-
         // Aufräumphase
         if (!isStopped()) {
             LOG.info(runThread.getName() + ": SUM" + " -> " + sum);
         } else {
             LOG.info(runThread.getName() + ": interrupted.");
-            stopRequest();
         }
 
     }
