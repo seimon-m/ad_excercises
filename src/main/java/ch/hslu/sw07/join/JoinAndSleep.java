@@ -49,9 +49,9 @@ public class JoinAndSleep implements Runnable {
         JoinAndSleep join1 = new JoinAndSleep(2000, t2);
         Thread t1 = new Thread(join1, "Thread 1");
 
-        t3.start();
-        t2.start();
         t1.start();
+        t2.start();
+        t3.start();
 
     }
 
