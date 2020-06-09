@@ -47,11 +47,11 @@ public final class RaceHorse implements Runnable {
         LOG.info("Rennpferd " + runThread.getName() + " geht in die Box.");
         try {
             startSignal.acquire();
-            LOG.info("Rennpferd " + runThread.getName() + " laeuft los...");
+            LOG.info("Rennpferd " + runThread.getName() + " läuft los...");
             Thread.sleep(random.nextInt(3000));
         } catch (InterruptedException ex) {
             LOG.info("Rennpferd " + runThread.getName() + " bricht ab.");
-            return;
+            runThread.interrupt();
         }
         LOG.info("Rennpferd " + runThread.getName() + " ist im Ziel.");
     }

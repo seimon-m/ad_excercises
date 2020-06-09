@@ -40,15 +40,14 @@ public final class Turf {
      * @param args not used.
      */
     public static void main(final String[] args) throws InterruptedException {
-        final Synch starterBox = new Latch();
-        for (int i = 0; i < 5; i++) {
+        final int numberOfHorses = 5;
+        final Synch starterBox = new Latch(numberOfHorses);
+        for (int i = 0; i < numberOfHorses; i++) {
             threads.add(new Thread(new RaceHorse(starterBox), "Horse " + i));
             threads.get(i).start();
         }
-        Thread.sleep(1000);
-        LOG.info("Start...");
         starterBox.release();
-        abort();
+        //abort();
     }
 
     public static void abort() {

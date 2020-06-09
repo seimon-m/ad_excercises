@@ -15,25 +15,49 @@
  */
 package ch.hslu.sw08.latch;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Eine Synchronisationshilfe, die es ermöglicht, einen oder mehrere Threads warten zu lassen, bis
  * diese durch andere Threads aufgeweckt werden. Latches sperren so lange, bis sie einmal ausgelöst
  * werden. Danach sind sie frei passierbar.
  */
 public class Latch implements Synch {
+    private static final Logger LOG = LogManager.getLogger(Latch.class);
+    private final Object lock = new Object();
     private int count = 0;
+    private boolean hasStarted = false;
+    private final int horses;
 
-    @Override
-    public synchronized void acquire() throws InterruptedException {
-//        while (count > 0) {
-//            this.wait();
-//        }
-        this.wait();
+    public Latch(final int horses) {
+        this.horses = horses;
     }
 
     @Override
-    public synchronized void release() {
-        this.notifyAll();
-        //count--;
+    public void acquire() throws InterruptedException {
+        synchronized (this.lock) {
+            count++;
+            if (count >= horses) {
+                lock.notifyAll();
+            }
+            while (!hasStarted) {
+                lock.wait();
+            }
+        }
+    }
+
+    @Override
+    public void release() throws InterruptedException {
+        synchronized (this.lock) {
+            while (count < horses) {
+                lock.wait();
+            }
+            LOG.info("Start...");
+            if (!hasStarted) {
+                hasStarted = true;
+                lock.notifyAll();
+            }
+        }
     }
 }

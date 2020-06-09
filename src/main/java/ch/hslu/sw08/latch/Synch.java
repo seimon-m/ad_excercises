@@ -30,5 +30,5 @@ public interface Synch {
     /**
      * Freigabe des geschützten Bereiches beim Austritt.
      */
-    public void release();
+    public void release() throws InterruptedException;
 }
