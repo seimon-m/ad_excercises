@@ -16,8 +16,9 @@
 package ch.hslu.sw09.buffer;
 
 import ch.hslu.sw08.buffer.Buffer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayDeque;
 import java.util.concurrent.*;
 
 /**
@@ -26,7 +27,7 @@ import java.util.concurrent.*;
  * @param <T> Elememente des Buffers
  */
 public final class BoundedBufferAdapter<T> implements Buffer<T> {
-
+    private static final Logger LOG = LogManager.getLogger(BoundedBufferAdapter.class);
     private final LinkedBlockingDeque<T> queue;
     private final Semaphore putSema;
     private final Semaphore takeSema;
@@ -83,13 +84,17 @@ public final class BoundedBufferAdapter<T> implements Buffer<T> {
 
     @Override
     public T get(long millis) throws InterruptedException {
-        if (!putSema.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
-            return null;
-        }
-        T elem;
+        takeSema.acquire();
+        T elem = null;
         synchronized (queue) {
+            while (this.empty()) {
+                this.wait(millis);
+                if (this.empty()) {
+                    LOG.debug("get time expired");
+                    return elem;
+                }
+            }
             elem = queue.removeLast();
-            size--;
         }
         putSema.release();
         return elem;
@@ -97,12 +102,18 @@ public final class BoundedBufferAdapter<T> implements Buffer<T> {
 
     @Override
     public T first() throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (queue.size() < 1) {
+            throw new IndexOutOfBoundsException("The buffer is empty. Could not get first element.");
+        }
+        return queue.getFirst();
     }
 
     @Override
     public T last() throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (queue.size() < 1) {
+            throw new IndexOutOfBoundsException("The buffer is empty. Could not get last element.");
+        }
+        return queue.getLast();
     }
 
     @Override
