@@ -23,25 +23,25 @@ import java.util.concurrent.Callable;
 public class CountTask implements Callable<Integer> {
 
     private final Counter counter;
-    private final int counts;
+    private final int countRuns;
 
     /**
      * Erzeugt eine Zähl-Aufgabe.
      *
-     * @param counter zu testender Counter.
-     * @param counts  Anzahl Zähldruchläufe.
+     * @param counter   zu testender Counter.
+     * @param countRuns Anzahl Zähldurchläufe.
      */
-    public CountTask(Counter counter, int counts) {
+    public CountTask(Counter counter, int countRuns) {
         this.counter = counter;
-        this.counts = counts;
+        this.countRuns = countRuns;
     }
 
     @Override
-    public Integer call() throws Exception {
-        for (int i = 0; i < counts; i++) {
+    public Integer call() {
+        for (int i = 0; i < countRuns; i++) {
             counter.increment();
         }
-        for (int i = 0; i < counts; i++) {
+        for (int i = 0; i < countRuns; i++) {
             counter.decrement();
         }
         return counter.get();

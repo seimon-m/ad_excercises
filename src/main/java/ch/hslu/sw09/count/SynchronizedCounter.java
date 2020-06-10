@@ -20,13 +20,14 @@ package ch.hslu.sw09.count;
  */
 public final class SynchronizedCounter implements Counter {
 
-    private int counter = 0;
+    private int counter;
     private final Object lock = new Object();
 
     /**
      * Erzeugt einen Zähler mit Zählerstand 0.
      */
     public SynchronizedCounter() {
+        counter = 0;
     }
 
     /**

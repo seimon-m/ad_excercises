@@ -35,9 +35,32 @@ public final class SpeedCount {
     private static boolean counterCheck;
 
     /**
-     * Privater Konstruktor.
+     * Main-Counter-Test.
+     *
+     * @param args not used.
      */
-    private SpeedCount() {
+    public static void main(final String args[]) {
+        final int passes = 23;
+        final int tester = 8;
+        final Counter counterSync = new SynchronizedCounter();
+        long sum = 0;
+        for (int i = 0; i < passes; i++) {
+            counterCheck = false;
+            sum += speedTest(counterSync, 1000000, tester);
+            if (!counterCheck) {
+                LOG.info("counter failed!");
+            }
+        }
+        LOG.info("Sync counter average test duration = " + sum / passes + " ms");
+        final Counter counterAtom = new AtomicCounter();
+        sum = 0;
+        for (int i = 0; i < passes; i++) {
+            sum += speedTest(counterAtom, 1000000, tester);
+        }
+        LOG.info("Atom counter average test duration = " + sum / passes + " ms");
+        if (counterCheck) {
+            LOG.info("counter ok");
+        }
     }
 
     /**
@@ -69,34 +92,5 @@ public final class SpeedCount {
         long duration = System.currentTimeMillis() - timer;
         executor.shutdown();
         return duration;
-    }
-
-    /**
-     * Main-Counter-Test.
-     *
-     * @param args not used.
-     */
-    public static void main(final String args[]) {
-        final int passes = 23;
-        final int tester = 20;
-        final Counter counterSync = new SynchronizedCounter();
-        long sum = 0;
-        for (int i = 0; i < passes; i++) {
-            counterCheck = false;
-            sum += speedTest(counterSync, 100000, tester);
-            if (!counterCheck) {
-                LOG.info("counter failed!");
-            }
-        }
-        LOG.info("Sync counter average test duration = " + sum / passes + " ms");
-        final Counter counterAtom = new AtomicCounter();
-        sum = 0;
-        for (int i = 0; i < passes; i++) {
-            sum += speedTest(counterAtom, 1000000, tester);
-        }
-        LOG.info("Atom counter average test duration = " + sum / passes + " ms");
-        if (counterCheck) {
-            LOG.info("counter ok");
-        }
     }
 }

@@ -23,17 +23,17 @@ public interface Counter {
     /**
      * Zähler um 1 addieren.
      */
-    public void increment();
+    void increment();
 
     /**
      * Zähler um 1 subtrahieren.
      */
-    public void decrement();
+    void decrement();
 
     /**
      * Liefert den Zählerstand.
      *
      * @return Zählerstand.
      */
-    public int get();
+    int get();
 }
