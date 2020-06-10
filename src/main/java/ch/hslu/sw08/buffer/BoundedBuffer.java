@@ -15,6 +15,9 @@
  */
 package ch.hslu.sw08.buffer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -26,11 +29,11 @@ import java.util.concurrent.TimeUnit;
  * @param <T> Elememente des Buffers
  */
 public final class BoundedBuffer<T> implements Buffer<T> {
-
+    private static final Logger LOG = LogManager.getLogger(BoundedBuffer.class);
     private final ArrayDeque<T> queue;
     private final Semaphore putSema;
     private final Semaphore takeSema;
-    private int maxSize;
+    private final int maxSize;
     private int size;
 
     /**
@@ -83,13 +86,17 @@ public final class BoundedBuffer<T> implements Buffer<T> {
 
     @Override
     public T get(long millis) throws InterruptedException {
-        if (!putSema.tryAcquire(millis, TimeUnit.MILLISECONDS)) {
-            return null;
-        }
-        T elem;
+        takeSema.acquire();
+        T elem = null;
         synchronized (queue) {
+            while (this.empty()) {
+                this.wait(millis);
+                if (this.empty()) {
+                    LOG.debug("get time expired");
+                    return elem;
+                }
+            }
             elem = queue.removeLast();
-            size--;
         }
         putSema.release();
         return elem;
@@ -97,30 +104,28 @@ public final class BoundedBuffer<T> implements Buffer<T> {
 
     @Override
     public T first() throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (queue.size() < 1) {
+            throw new IndexOutOfBoundsException("The buffer is empty. Could not get first element.");
+        }
+        return queue.getFirst();
     }
 
     @Override
     public T last() throws InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (queue.size() < 1) {
+            throw new IndexOutOfBoundsException("The buffer is empty. Could not get last element.");
+        }
+        return queue.getLast();
     }
 
     @Override
     public boolean empty() {
-        if (this.queue.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.queue.isEmpty();
     }
 
     @Override
     public boolean full() {
-        if (this.queue.size() == this.maxSize) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.queue.size() == this.maxSize;
     }
 
     @Override

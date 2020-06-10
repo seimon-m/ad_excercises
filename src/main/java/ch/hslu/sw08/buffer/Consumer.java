@@ -15,11 +15,14 @@
  */
 package ch.hslu.sw08.buffer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Konsument, der soviele Werte aus einer Queue liest, wie er nur kann.
  */
 public final class Consumer implements Runnable {
-
+    private static final Logger LOG = LogManager.getLogger(Consumer.class);
     private final BoundedBuffer<Integer> queue;
     private long sum;
 
@@ -36,7 +39,7 @@ public final class Consumer implements Runnable {
     public void run() {
         while (true) {
             try {
-                sum += queue.get(1000);
+                sum += queue.get(10);
             } catch (InterruptedException ex) {
                 return;
             }
