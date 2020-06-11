@@ -13,16 +13,16 @@ public class MainSort {
     private static final char[] charArray = randomChars(500_000);
 
     public static void main(String[] args) {
-//        MainSort.measureMediumInsertion1(5);
-//        MainSort.measureBigInsertion1(5);
-//        MainSort.measureMediumInsertion2(5);
-//        MainSort.measureBigInsertion2(5);
+        MainSort.measureMediumInsertion1(5);
+        MainSort.measureBigInsertion1(5);
+        MainSort.measureMediumInsertion2(5);
+        MainSort.measureBigInsertion2(5);
 //        MainSort.measureMediumSelection(5);
 //        MainSort.measureBigSelection(5);
 //        MainSort.measureMediumBubble(5);
 //        MainSort.measureBigBubble(5);
 //        MainSort.measureQuicksortChar(5);
-        MainSort.measureQuicksortInt(5);
+//        MainSort.measureQuicksortInt(5);
     }
 
     private static void measureMediumInsertion1(final int n) {
@@ -134,7 +134,7 @@ public class MainSort {
         return array;
     }
 
-    private static final char[] randomChars(final int length) {
+    private static char[] randomChars(final int length) {
         char[] array = new char[length];
         Random random = new Random();
         for (int i = 0; i < length; i++) {

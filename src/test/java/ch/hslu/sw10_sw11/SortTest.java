@@ -14,7 +14,7 @@ class SortTest {
 
     @Test
     void insertionSort() {
-        int[] actual = array.clone();
+        int[] actual = {5, 2, 8, 0, 22, -7, 12, 5, 19};
         int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.insertionSort(actual);
         for (int i = 0; i < actual.length; i++) {
@@ -24,7 +24,7 @@ class SortTest {
 
     @Test
     void insertionSort2() {
-        int[] actual = array.clone();
+        int[] actual = {5, 2, 8, 0, 22, -7, 12, 5, 19};
         int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.insertionSort2(actual);
         for (int i = 0; i < actual.length; i++) {
@@ -34,7 +34,7 @@ class SortTest {
 
     @Test
     void selectionSort() {
-        int[] actual = array.clone();
+        int[] actual = {5, 2, 8, 0, 22, -7, 12, 5, 19};
         int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.selectionSort(actual);
         for (int i = 0; i < actual.length; i++) {
@@ -45,7 +45,7 @@ class SortTest {
 
     @Test
     void bubbleSort() {
-        int[] actual = array.clone();
+        int[] actual = {5, 2, 8, 0, 22, -7, 12, 5, 19};
         int[] expected = {-7, 0, 2, 5, 5, 8, 12, 19, 22};
         Sort.bubbleSort(actual);
         for (int i = 0; i < actual.length; i++) {
@@ -67,7 +67,7 @@ class SortTest {
 
     @Test
     void quicksortChar2() {
-        char[] actual = charArray.clone();
+        char[] actual = {'b', 's', 'u', 'a', 'z', 'y', 's'};
         final char[] expected = {'a', 'b', 's', 's', 'u', 'y', 'z'};
         Sort.quicksort(actual);
         for (int i = 0; i < actual.length; i++) {

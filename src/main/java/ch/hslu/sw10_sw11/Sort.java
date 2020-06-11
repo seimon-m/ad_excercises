@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class Sort {
     private static final Logger LOG = LogManager.getLogger(Sort.class);
@@ -38,9 +37,7 @@ public class Sort {
             }
             aDummy[j] = element; // Element an der richtigen Stelle einfügen
         }
-        for (int i = 0; i < aDummy.length - 1; i++) {
-            a[i] = aDummy[i + 1];
-        }
+        System.arraycopy(aDummy, 1, a, 0, aDummy.length - 1);
     }
 
 
@@ -75,19 +72,18 @@ public class Sort {
             for (int j = 1; j < (a.length - i); j++) {
                 element = a[j];
                 if (a[j - 1] > element) {
-                    int smallerElement = element;
                     a[j] = a[j - 1];
-                    a[j - 1] = smallerElement;
+                    a[j - 1] = element;
                 }
             }
         }
     }
 
-    public static final void quicksort(final char[] a) {
+    public static void quicksort(final char[] a) {
         quicksort(a, 0, a.length - 1);
     }
 
-    public static final void quicksort(final char[] a, final int left, final int right) {
+    public static void quicksort(final char[] a, final int left, final int right) {
         int up = left;                 // linke Grenze
         int down = right - 1;           // rechte Grenze (ohne Pivot)
         char t = a[right];              // rechtes Element als Pivot
@@ -116,11 +112,11 @@ public class Sort {
         }
     }
 
-    public static final void quicksort(final int[] a) {
+    public static void quicksort(final int[] a) {
         quicksort(a, 0, a.length - 1);
     }
 
-    public static final void quicksort(final int[] a, final int left, final int right) {
+    public static void quicksort(final int[] a, final int left, final int right) {
         int up = left;                 // linke Grenze
         int down = right - 1;           // rechte Grenze (ohne Pivot)
         int t = a[right];              // rechtes Element als Pivot
@@ -156,7 +152,7 @@ public class Sort {
      * @param firstIndex  Index des ersten Zeichens
      * @param secondIndex Index des zweiten Zeichens
      */
-    private static final void exchange(final char[] a, final int firstIndex, final int secondIndex) {
+    private static void exchange(final char[] a, final int firstIndex, final int secondIndex) {
         char tmp;
         tmp = a[firstIndex];
         a[firstIndex] = a[secondIndex];
@@ -170,7 +166,7 @@ public class Sort {
      * @param firstIndex  Index der ersten Zahl
      * @param secondIndex Index der zweiten Zahl
      */
-    private static final void exchange(final int[] a, final int firstIndex, final int secondIndex) {
+    private static void exchange(final int[] a, final int firstIndex, final int secondIndex) {
         int tmp;
         tmp = a[firstIndex];
         a[firstIndex] = a[secondIndex];
