@@ -48,6 +48,7 @@ public final class DemoQuicksort {
         final ForkJoinPool pool = new ForkJoinPool();
         RandomInitTask initTask = new RandomInitTask(array, 100);
         pool.invoke(initTask);
+        LOG.debug("Init. array with size of " + size);
 
         SumTask sumTask = new SumTask(array);
         long result = pool.invoke(sumTask);
@@ -57,7 +58,7 @@ public final class DemoQuicksort {
         long time1 = System.currentTimeMillis();
         pool.invoke(sortTask);
         long time2 = System.currentTimeMillis();
-        LOG.info("QuicksortTask  : " + (time2 - time1) / 1000 + " sec");
+        LOG.info("Quicksort conc.: " + (time2 - time1) / 1000 + " sec");
 
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
@@ -70,14 +71,14 @@ public final class DemoQuicksort {
         result = pool.invoke(sumTask);
         LOG.debug("Init. Checksum : " + result);
 
-        long time3 = System.currentTimeMillis();
+        time1 = System.currentTimeMillis();
         QuicksortRecursive.quicksort(array);
-        long time4 = System.currentTimeMillis();
-        LOG.info("QuicksortRec.  : " + (time4 - time3) / 1000 + " sec");
+        time2 = System.currentTimeMillis();
+        LOG.info("Quicksort rec. : " + (time2 - time1) / 1000 + " sec");
 
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);
-        LOG.debug("Recu. Checksum : " + result);
+        LOG.debug("Rec. Checksum  : " + result);
 
         initTask = new RandomInitTask(array, 100);
         pool.invoke(initTask);
@@ -86,10 +87,10 @@ public final class DemoQuicksort {
         result = pool.invoke(sumTask);
         LOG.debug("Init. checksum : " + result);
 
-        long time5 = System.currentTimeMillis();
+        time1 = System.currentTimeMillis();
         Arrays.sort(array);
-        long time6 = System.currentTimeMillis();
-        LOG.info("Arrays.sort    : " + (time6 - time5) / 1000 + " sec");
+        time2 = System.currentTimeMillis();
+        LOG.info("Arrays.sort    : " + (time2 - time1) / 1000 + " sec");
 
         sumTask = new SumTask(array);
         result = pool.invoke(sumTask);

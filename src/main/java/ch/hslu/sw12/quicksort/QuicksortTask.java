@@ -23,7 +23,7 @@ import java.util.concurrent.RecursiveAction;
 @SuppressWarnings("serial")
 public final class QuicksortTask extends RecursiveAction {
 
-    private static final int THRESHOLD = 5;
+    private static final int THRESHOLD = 10_000;
     private final int[] array;
     private final int min;
     private final int max;
@@ -89,7 +89,7 @@ public final class QuicksortTask extends RecursiveAction {
         }
     }
 
-    private static final void exchange(final int[] a, final int firstIndex, final int secondIndex) {
+    private static void exchange(final int[] a, final int firstIndex, final int secondIndex) {
         int tmp;
         tmp = a[firstIndex];
         a[firstIndex] = a[secondIndex];
