@@ -40,8 +40,7 @@ public final class FibonacciTask extends RecursiveTask<Long> {
             FibonacciTask one = new FibonacciTask(n - 1);
             FibonacciTask two = new FibonacciTask(n - 2);
             one.fork();
-            two.fork();
-            return one.join() + two.join();
+            return two.invoke() + one.join();
         } else {
             return n;
         }
