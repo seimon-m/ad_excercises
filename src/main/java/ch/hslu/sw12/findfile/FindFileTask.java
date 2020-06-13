@@ -57,6 +57,7 @@ public final class FindFileTask extends CountedCompleter<String> {
         if (list != null) {
             for (File file : list) {
                 if (file.isDirectory()) {
+                    LOG.debug(file);
                     this.addToPendingCount(1);
                     final FindFileTask task = new FindFileTask(regex, file);
                     task.fork();
